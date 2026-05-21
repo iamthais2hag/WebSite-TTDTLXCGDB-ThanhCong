@@ -1,0 +1,10 @@
+packages:
+  - "client"
+  - "server"
+  - "sync-tool"
+  - "shared"
+
+onlyBuiltDependencies:
+  - esbuild
+allowBuilds:
+  esbuild: true

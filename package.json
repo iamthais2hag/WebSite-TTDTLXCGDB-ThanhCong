@@ -1,0 +1,14 @@
+{
+  "name": "website-thanh-cong",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.1.3",
+  "scripts": {
+    "dev": "pnpm --parallel --filter client --filter server dev",
+    "build": "pnpm --filter shared build && pnpm --filter client build && pnpm --filter server build && pnpm --filter sync-tool build",
+    "check": "pnpm -r check",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint"
+  }
+}
