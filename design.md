@@ -587,6 +587,58 @@ router.post("/api/sync/student-photo",
 );
 ```
 
+### Photo Upload Strategy
+
+**Giai đoạn 1:**
+- Sync-tool convert/tối ưu từng ảnh JP2 -> JPG local
+- Upload từng JPG qua `POST /api/sync/student-photo`
+- Dùng concurrency có giới hạn để không tạo quá nhiều request cùng lúc
+- Cách này đơn giản, dễ debug, dễ retry từng ảnh
+
+**Giai đoạn tối ưu sau:**
+- Nếu batch 100-200 ảnh gây quá nhiều HTTP requests hoặc sync chậm, có thể thêm endpoint upload ZIP theo batch
+- Vì mỗi JPG đã tối ưu khoảng 25-30KB, ZIP không giảm dung lượng nhiều, nhưng giảm overhead số lượng request
+- Với 200 ảnh x 30KB, payload ảnh khoảng 6MB trước overhead; cần cấu hình giới hạn hợp lý
+- Đây là nâng cấp có kiểm soát, không bắt buộc triển khai ngay giai đoạn 1
+
+### Endpoint đề xuất cho batch ZIP
+
+```
+POST /api/sync/student-photo-batch
+```
+
+**Auth:**
+- Bắt buộc `X-SYNC-SECRET`
+- Production bắt buộc HTTPS
+
+**Request:**
+- `multipart/form-data`
+- `manifest`: JSON mô tả danh sách ảnh
+- `photosZip`: file `.zip` chứa các ảnh JPG đã tối ưu
+
+**Manifest ví dụ:**
+```json
+{
+  "batchId": "20260521-001",
+  "photos": [
+    {
+      "MaKhoaHoc": "K45",
+      "MaDK": "DK001",
+      "filename": "K45_DK001.jpg"
+    }
+  ]
+}
+```
+
+**Quy tắc xử lý batch ZIP:**
+- Server chỉ giải nén trong thư mục tạm được kiểm soát
+- Reject file không phải `.jpg`/`image/jpeg`
+- Reject filename có path traversal, ký tự lạ hoặc không khớp manifest
+- Giới hạn tổng kích thước ZIP và số lượng ảnh mỗi batch
+- Ghi file cuối cùng vào `public/uploads/students/{MaKhoaHoc}/{MaDK}.jpg` sau khi validate xong
+- Lỗi từng ảnh phải trả về chi tiết theo `MaDK` để sync-tool retry được ảnh lỗi
+- Không trả path vật lý của server
+- Không log `X-SYNC-SECRET`
 
 ---
 
@@ -648,6 +700,13 @@ MAX_RETRIES=3
 IMAGE_ENGINE=magick
 IMAGE_CONCURRENCY=5
 ```
+
+**Production trong `sync-tool/.env.example`:**
+```env
+API_URL=https://thanhcongdaklak.edu.vn
+```
+
+Ghi chú: production must use HTTPS. Local development được phép dùng `http://localhost:3000`.
 
 ### Checkpoint & Recovery
 
@@ -1139,13 +1198,41 @@ if (process.env.NODE_ENV === "production") {
 }
 ```
 
+### HTTPS/TLS cho Sync API
+
+Các API sync dùng `X-SYNC-SECRET` để xác thực. Trong môi trường production, mọi request từ sync-tool đến server bắt buộc phải đi qua HTTPS/TLS.
+
+**Lý do:**
+- Sync-tool có thể chạy tại máy local của Trung tâm
+- Server production có thể chạy trên VPS
+- Nếu dùng HTTP thường qua internet, `X-SYNC-SECRET` có thể bị lộ qua packet sniffing hoặc proxy không an toàn
+- HTTPS bảo vệ secret, payload học viên, metadata và photo upload trên đường truyền
+
+**Quy tắc production:**
+- `API_URL` trong `sync-tool/.env` production phải bắt đầu bằng `https://`
+- Sync-tool phải cảnh báo hoặc từ chối chạy production nếu `API_URL` là `http://` và không phải `localhost`/`127.0.0.1`
+- Các endpoint sau bắt buộc HTTPS ở production:
+  - tRPC `sync.pushBatch`
+  - REST `POST /api/sync/student-photo`
+  - REST batch photo upload nếu có sau này
+- Nginx hoặc reverse proxy phải cấu hình SSL/TLS
+- HTTP nên redirect sang HTTPS
+- Có thể bật HSTS sau khi domain và SSL ổn định
+- Không log `X-SYNC-SECRET`
+- Có kế hoạch rotate `SYNC_SECRET` nếu nghi ngờ bị lộ
+
+**Ngoại lệ development:**
+- Local development được phép dùng `http://localhost:3000`
+- Staging nội bộ có thể dùng HTTP chỉ khi nằm hoàn toàn trong mạng local an toàn, nhưng production public bắt buộc HTTPS
+
 ### API Security Summary
 
-| Endpoint | Auth | Rate Limit |
-|----------|------|------------|
-| `lookup.searchStudent` | None (public) | **10 req/IP/phút** |
-| `sync.pushBatch` | `X-SYNC-SECRET` | None |
-| `POST /api/sync/student-photo` | `X-SYNC-SECRET` | None |
+| Endpoint | Auth | Rate Limit | Transport |
+|----------|------|------------|-----------|
+| `lookup.searchStudent` | None (public) | **10 req/IP/phút** | HTTPS production |
+| `sync.pushBatch` | `X-SYNC-SECRET` | None | **HTTPS bắt buộc production** |
+| `POST /api/sync/student-photo` | `X-SYNC-SECRET` | None | **HTTPS bắt buộc production** |
+| `POST /api/sync/student-photo-batch` (nếu thêm sau) | `X-SYNC-SECRET` | None | **HTTPS bắt buộc production** |
 
 ### Data Security
 
@@ -1157,6 +1244,7 @@ if (process.env.NODE_ENV === "production") {
 2. **Sync Secret:**
    - Timing-safe compare
    - Không log secret
+   - Có kế hoạch rotate `SYNC_SECRET` nếu nghi ngờ bị lộ
 
 3. **File Upload:**
    - Sanitize path chống traversal
@@ -1396,6 +1484,8 @@ Mỗi task/code chỉ hoàn thành khi:
 - [ ] Không trả SoCMT gốc qua API public
 - [ ] Rate limit lookup cơ bản hoạt động
 - [ ] Sync secret được verify đúng cách
+- [ ] Production sync API dùng HTTPS
+- [ ] Không cấu hình sync production qua HTTP public
 
 ### Git
 - [ ] Không có file cấm trong git status
