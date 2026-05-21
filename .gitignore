@@ -1,0 +1,31 @@
+# Environment
+.env
+.env.*
+!.env.example
+!sync-tool/.env.example
+
+# Dependencies
+node_modules/
+sync-tool/node_modules/
+
+# Build outputs
+dist/
+build/
+.vite/
+sync-tool/dist/
+
+# Test and TypeScript
+coverage/
+*.tsbuildinfo
+
+# Logs
+*.log
+
+# Runtime uploads (student photos)
+public/uploads/students/*
+!public/uploads/students/.gitkeep
+
+# Sync tool runtime files
+sync-tool/.env
+sync-tool/temp/
+sync-tool/last-sync.json
