@@ -1,6 +1,6 @@
 import { getTableConfig } from "drizzle-orm/mysql-core";
 import { describe, expect, it } from "vitest";
-import { studentLookupCache } from "./schema.js";
+import { studentLookupCache, syncLog } from "./schema.js";
 
 describe("studentLookupCache schema", () => {
   const config = getTableConfig(studentLookupCache);
@@ -42,6 +42,46 @@ describe("studentLookupCache schema", () => {
       "student_lookup_cache_LoaiDaoTao_idx",
       "student_lookup_cache_sourceUpdatedAt_idx",
       "student_lookup_cache_checkpoint_idx",
+    ]);
+  });
+});
+
+describe("syncLog schema", () => {
+  const config = getTableConfig(syncLog);
+
+  it("defines the optional sync log table", () => {
+    expect(config.name).toBe("sync_log");
+  });
+
+  it("stores batch status and checkpoint metadata", () => {
+    const columnNames = config.columns.map((column) => column.name);
+
+    expect(columnNames).toEqual([
+      "id",
+      "batchNumber",
+      "recordsProcessed",
+      "recordsSuccess",
+      "recordsFailed",
+      "imageErrors",
+      "startedAt",
+      "completedAt",
+      "status",
+      "errorMessage",
+      "checkpointMaDK",
+      "checkpointSourceUpdatedAt",
+    ]);
+  });
+
+  it("uses the expected sync status enum values", () => {
+    const statusColumn = config.columns.find(
+      (column) => column.name === "status"
+    );
+
+    expect(statusColumn?.enumValues).toEqual([
+      "running",
+      "success",
+      "failed",
+      "partial",
     ]);
   });
 });

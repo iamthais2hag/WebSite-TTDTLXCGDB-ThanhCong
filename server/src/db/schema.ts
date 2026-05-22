@@ -46,3 +46,18 @@ export const studentLookupCache = mysqlTable(
     ),
   ]
 );
+
+export const syncLog = mysqlTable("sync_log", {
+  id: int("id").autoincrement().primaryKey(),
+  batchNumber: int("batchNumber"),
+  recordsProcessed: int("recordsProcessed"),
+  recordsSuccess: int("recordsSuccess"),
+  recordsFailed: int("recordsFailed"),
+  imageErrors: int("imageErrors"),
+  startedAt: datetime("startedAt"),
+  completedAt: datetime("completedAt"),
+  status: mysqlEnum("status", ["running", "success", "failed", "partial"]),
+  errorMessage: text("errorMessage"),
+  checkpointMaDK: varchar("checkpointMaDK", { length: 50 }),
+  checkpointSourceUpdatedAt: datetime("checkpointSourceUpdatedAt"),
+});
