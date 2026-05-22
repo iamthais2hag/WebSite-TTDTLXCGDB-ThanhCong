@@ -1,19 +1,31 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { syncRouter } from "./sync.js";
 
-const { normalizeSyncBatchRecordsMock } = vi.hoisted(() => ({
-  normalizeSyncBatchRecordsMock: vi.fn((records) =>
-    records.map((record: { HangDaoTao: string | null; MaDK: string }) => ({
-      ...record,
-      LoaiDaoTao: record.HangDaoTao?.trim().toUpperCase().startsWith("A")
-        ? "moto"
-        : "oto",
-    }))
-  ),
-}));
+const { normalizeSyncBatchRecordsMock, upsertSyncBatchMock } = vi.hoisted(
+  () => ({
+    normalizeSyncBatchRecordsMock: vi.fn((records) =>
+      records.map((record: { HangDaoTao: string | null; MaDK: string }) => ({
+        ...record,
+        LoaiDaoTao: record.HangDaoTao?.trim().toUpperCase().startsWith("A")
+          ? "moto"
+          : "oto",
+      }))
+    ),
+    upsertSyncBatchMock: vi.fn(async (records) => ({
+      processed: records.length,
+      upserted: new Set(
+        records.map((record: { MaDK: string }) => record.MaDK)
+      ).size,
+    })),
+  })
+);
 
 vi.mock("../../services/syncBatchValidation.js", () => ({
   normalizeSyncBatchRecords: normalizeSyncBatchRecordsMock,
+}));
+
+vi.mock("../../services/syncBatchRepository.js", () => ({
+  upsertSyncBatch: upsertSyncBatchMock,
 }));
 
 const previousSyncSecret = process.env.SYNC_SECRET;
@@ -54,6 +66,13 @@ function createCaller(syncSecret?: string | string[]) {
 describe("sync.pushBatch", () => {
   beforeEach(() => {
     normalizeSyncBatchRecordsMock.mockClear();
+    upsertSyncBatchMock.mockClear();
+    upsertSyncBatchMock.mockImplementation(async (records) => ({
+      processed: records.length,
+      upserted: new Set(
+        records.map((record: { MaDK: string }) => record.MaDK)
+      ).size,
+    }));
     process.env.SYNC_SECRET = testSecret;
   });
 
@@ -69,6 +88,7 @@ describe("sync.pushBatch", () => {
     ).rejects.toMatchObject({
       code: "UNAUTHORIZED",
     });
+    expect(upsertSyncBatchMock).not.toHaveBeenCalled();
   });
 
   it("rejects wrong X-SYNC-SECRET", async () => {
@@ -79,9 +99,10 @@ describe("sync.pushBatch", () => {
     ).rejects.toMatchObject({
       code: "UNAUTHORIZED",
     });
+    expect(upsertSyncBatchMock).not.toHaveBeenCalled();
   });
 
-  it("returns validation success for a valid protected batch", async () => {
+  it("upserts and returns success for a valid protected batch", async () => {
     await expect(
       createCaller(testSecret).pushBatch({
         records: [validRecord],
@@ -90,14 +111,15 @@ describe("sync.pushBatch", () => {
       success: true,
       processed: 1,
       validated: 1,
-      records: [
-        {
-          MaDK: "DK001",
-          LoaiDaoTao: "oto",
-        },
-      ],
+      upserted: 1,
     });
     expect(normalizeSyncBatchRecordsMock).toHaveBeenCalledTimes(1);
+    expect(upsertSyncBatchMock).toHaveBeenCalledWith([
+      expect.objectContaining({
+        MaDK: "DK001",
+        LoaiDaoTao: "oto",
+      }),
+    ]);
   });
 
   it("rejects an empty records array", async () => {
@@ -106,6 +128,7 @@ describe("sync.pushBatch", () => {
         records: [],
       })
     ).rejects.toThrow();
+    expect(upsertSyncBatchMock).not.toHaveBeenCalled();
   });
 
   it("rejects records over the 200 item limit", async () => {
@@ -117,6 +140,7 @@ describe("sync.pushBatch", () => {
         })),
       })
     ).rejects.toThrow();
+    expect(upsertSyncBatchMock).not.toHaveBeenCalled();
   });
 
   it("rejects records missing MaDK", async () => {
@@ -130,6 +154,7 @@ describe("sync.pushBatch", () => {
         ],
       })
     ).rejects.toThrow();
+    expect(upsertSyncBatchMock).not.toHaveBeenCalled();
   });
 
   it("rejects records missing SoCMT", async () => {
@@ -143,6 +168,7 @@ describe("sync.pushBatch", () => {
         ],
       })
     ).rejects.toThrow();
+    expect(upsertSyncBatchMock).not.toHaveBeenCalled();
   });
 
   it("rejects records with invalid NgaySinh", async () => {
@@ -156,10 +182,11 @@ describe("sync.pushBatch", () => {
         ],
       })
     ).rejects.toThrow();
+    expect(upsertSyncBatchMock).not.toHaveBeenCalled();
   });
 
-  it("normalizes HangDaoTao starting with A to moto", async () => {
-    const result = await createCaller(testSecret).pushBatch({
+  it("normalizes HangDaoTao starting with A to moto before upsert", async () => {
+    await createCaller(testSecret).pushBatch({
       records: [
         {
           ...validRecord,
@@ -168,11 +195,15 @@ describe("sync.pushBatch", () => {
       ],
     });
 
-    expect(result.records[0]?.LoaiDaoTao).toBe("moto");
+    expect(upsertSyncBatchMock).toHaveBeenCalledWith([
+      expect.objectContaining({
+        LoaiDaoTao: "moto",
+      }),
+    ]);
   });
 
-  it("normalizes HangDaoTao not starting with A to oto", async () => {
-    const result = await createCaller(testSecret).pushBatch({
+  it("normalizes HangDaoTao not starting with A to oto before upsert", async () => {
+    await createCaller(testSecret).pushBatch({
       records: [
         {
           ...validRecord,
@@ -181,10 +212,14 @@ describe("sync.pushBatch", () => {
       ],
     });
 
-    expect(result.records[0]?.LoaiDaoTao).toBe("oto");
+    expect(upsertSyncBatchMock).toHaveBeenCalledWith([
+      expect.objectContaining({
+        LoaiDaoTao: "oto",
+      }),
+    ]);
   });
 
-  it("does not continue to downstream processing when validation fails", async () => {
+  it("does not continue to transaction when validation fails", async () => {
     await expect(
       createCaller(testSecret).pushBatch({
         records: [
@@ -197,5 +232,56 @@ describe("sync.pushBatch", () => {
     ).rejects.toThrow();
 
     expect(normalizeSyncBatchRecordsMock).not.toHaveBeenCalled();
+    expect(upsertSyncBatchMock).not.toHaveBeenCalled();
+  });
+
+  it("does not return success when the transaction fails", async () => {
+    upsertSyncBatchMock.mockRejectedValueOnce(new Error("transaction failed"));
+
+    await expect(
+      createCaller(testSecret).pushBatch({
+        records: [validRecord],
+      })
+    ).rejects.toMatchObject({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Khong the dong bo batch. Vui long thu lai.",
+    });
+  });
+
+  it("does not log secret or raw SoCMT when transaction fails", async () => {
+    const consoleLog = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const consoleWarn = vi
+      .spyOn(console, "warn")
+      .mockImplementation(() => undefined);
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    upsertSyncBatchMock.mockRejectedValueOnce(new Error("transaction failed"));
+
+    try {
+      await expect(
+        createCaller(testSecret).pushBatch({
+          records: [validRecord],
+        })
+      ).rejects.toMatchObject({
+        code: "INTERNAL_SERVER_ERROR",
+      });
+
+      const loggedText = [
+        ...consoleLog.mock.calls,
+        ...consoleWarn.mock.calls,
+        ...consoleError.mock.calls,
+      ]
+        .flat()
+        .join(" ");
+
+      expect(loggedText).not.toContain(testSecret);
+      expect(loggedText).not.toContain("012345678901");
+    } finally {
+      consoleLog.mockRestore();
+      consoleWarn.mockRestore();
+      consoleError.mockRestore();
+    }
   });
 });
