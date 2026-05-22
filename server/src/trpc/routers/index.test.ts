@@ -15,7 +15,7 @@ describe("appRouter", () => {
     });
   });
 
-  it("mounts lookup and sync routers without implementing procedures yet", () => {
+  it("mounts lookup and sync routers", () => {
     const caller = appRouter.createCaller({
       req: {} as never,
       res: {} as never,
