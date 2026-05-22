@@ -88,6 +88,7 @@ describe("sync.pushBatch", () => {
     ).rejects.toMatchObject({
       code: "UNAUTHORIZED",
     });
+    expect(normalizeSyncBatchRecordsMock).not.toHaveBeenCalled();
     expect(upsertSyncBatchMock).not.toHaveBeenCalled();
   });
 
@@ -99,7 +100,69 @@ describe("sync.pushBatch", () => {
     ).rejects.toMatchObject({
       code: "UNAUTHORIZED",
     });
+    expect(normalizeSyncBatchRecordsMock).not.toHaveBeenCalled();
     expect(upsertSyncBatchMock).not.toHaveBeenCalled();
+  });
+
+  it("does not expose sync secret in auth error messages", async () => {
+    const wrongSecret = "wrong-test-sync-secret";
+
+    try {
+      await createCaller(wrongSecret).pushBatch({
+        records: [validRecord],
+      });
+
+      throw new Error("Expected sync.pushBatch to reject");
+    } catch (error) {
+      expect(error).toMatchObject({
+        code: "UNAUTHORIZED",
+        message: "Unauthorized",
+      });
+      expect(error instanceof Error ? error.message : String(error)).not.toContain(
+        testSecret
+      );
+      expect(error instanceof Error ? error.message : String(error)).not.toContain(
+        wrongSecret
+      );
+    }
+  });
+
+  it("does not log X-SYNC-SECRET when auth fails", async () => {
+    const wrongSecret = "wrong-test-sync-secret";
+    const consoleLog = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const consoleWarn = vi
+      .spyOn(console, "warn")
+      .mockImplementation(() => undefined);
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    try {
+      await expect(
+        createCaller(wrongSecret).pushBatch({
+          records: [validRecord],
+        })
+      ).rejects.toMatchObject({
+        code: "UNAUTHORIZED",
+      });
+
+      const loggedText = [
+        ...consoleLog.mock.calls,
+        ...consoleWarn.mock.calls,
+        ...consoleError.mock.calls,
+      ]
+        .flat()
+        .join(" ");
+
+      expect(loggedText).not.toContain(testSecret);
+      expect(loggedText).not.toContain(wrongSecret);
+      expect(normalizeSyncBatchRecordsMock).not.toHaveBeenCalled();
+      expect(upsertSyncBatchMock).not.toHaveBeenCalled();
+    } finally {
+      consoleLog.mockRestore();
+      consoleWarn.mockRestore();
+      consoleError.mockRestore();
+    }
   });
 
   it("upserts and returns success for a valid protected batch", async () => {
