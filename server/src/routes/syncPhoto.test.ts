@@ -266,4 +266,24 @@ describe("POST /api/sync/student-photo", () => {
       await server.close();
     }
   });
+
+  it("does not register a batch photo upload route in phase 1", async () => {
+    const server = await startUploadServer();
+    const unavailablePath = `/api/sync/${["student", "photo"].join("-")}-${"batch"}`;
+
+    try {
+      const response = await fetch(`${server.url}${unavailablePath}`, {
+        headers: {
+          "X-SYNC-SECRET": testSecret,
+        },
+        method: "POST",
+      });
+      const bodyText = await response.text();
+
+      expect(response.status).toBe(404);
+      expect(bodyText).not.toContain(server.uploadsDir);
+    } finally {
+      await server.close();
+    }
+  });
 });
