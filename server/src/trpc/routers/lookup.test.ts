@@ -1,4 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  lookupRateLimitMaxRequests,
+  lookupRateLimitMessage,
+  resetLookupRateLimitForTests,
+} from "../../services/lookupRateLimit.js";
+import { appRouter } from "./index.js";
 import { lookupRouter } from "./lookup.js";
 
 const { searchStudentLookupRecordsMock } = vi.hoisted(() => ({
@@ -9,9 +15,27 @@ vi.mock("../../services/studentLookupRepository.js", () => ({
   searchStudentLookupRecords: searchStudentLookupRecordsMock,
 }));
 
-function createCaller() {
+function createCaller(ip = "127.0.0.1") {
   return lookupRouter.createCaller({
-    req: {} as never,
+    req: {
+      ip,
+      socket: {
+        remoteAddress: ip,
+      },
+    } as never,
+    res: {} as never,
+    syncSecret: undefined,
+  });
+}
+
+function createAppCaller(ip = "127.0.0.1") {
+  return appRouter.createCaller({
+    req: {
+      ip,
+      socket: {
+        remoteAddress: ip,
+      },
+    } as never,
     res: {} as never,
     syncSecret: undefined,
   });
@@ -19,6 +43,7 @@ function createCaller() {
 
 describe("lookup.searchStudent", () => {
   beforeEach(() => {
+    resetLookupRateLimitForTests();
     searchStudentLookupRecordsMock.mockReset();
   });
 
@@ -172,5 +197,109 @@ describe("lookup.searchStudent", () => {
     ).rejects.toThrow();
 
     expect(searchStudentLookupRecordsMock).not.toHaveBeenCalled();
+  });
+
+  it("allows requests within the IP rate limit", async () => {
+    searchStudentLookupRecordsMock.mockResolvedValue([]);
+    const caller = createCaller("192.0.2.10");
+
+    for (let index = 0; index < lookupRateLimitMaxRequests; index += 1) {
+      await expect(
+        caller.searchStudent({
+          soCMT: "012345678901",
+          loaiDaoTao: "oto",
+        })
+      ).resolves.toEqual([]);
+    }
+
+    expect(searchStudentLookupRecordsMock).toHaveBeenCalledTimes(
+      lookupRateLimitMaxRequests
+    );
+  });
+
+  it("rejects lookup requests over the IP rate limit", async () => {
+    searchStudentLookupRecordsMock.mockResolvedValue([]);
+    const caller = createCaller("192.0.2.11");
+
+    for (let index = 0; index < lookupRateLimitMaxRequests; index += 1) {
+      await caller.searchStudent({
+        soCMT: "012345678901",
+        loaiDaoTao: "oto",
+      });
+    }
+
+    await expect(
+      caller.searchStudent({
+        soCMT: "012345678901",
+        loaiDaoTao: "oto",
+      })
+    ).rejects.toMatchObject({
+      code: "TOO_MANY_REQUESTS",
+      message: lookupRateLimitMessage,
+    });
+    expect(searchStudentLookupRecordsMock).toHaveBeenCalledTimes(
+      lookupRateLimitMaxRequests
+    );
+  });
+
+  it("does not break non-lookup tRPC routes when lookup is rate limited", async () => {
+    searchStudentLookupRecordsMock.mockResolvedValue([]);
+    const caller = createAppCaller("192.0.2.12");
+
+    for (let index = 0; index < lookupRateLimitMaxRequests; index += 1) {
+      await caller.lookup.searchStudent({
+        soCMT: "012345678901",
+        loaiDaoTao: "oto",
+      });
+    }
+
+    await expect(caller.status()).resolves.toEqual({
+      ok: true,
+      service: "server",
+    });
+  });
+
+  it("does not log raw SoCMT when lookup is rate limited", async () => {
+    searchStudentLookupRecordsMock.mockResolvedValue([]);
+    const consoleLog = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const consoleWarn = vi
+      .spyOn(console, "warn")
+      .mockImplementation(() => undefined);
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+    const caller = createCaller("192.0.2.13");
+
+    try {
+      for (let index = 0; index < lookupRateLimitMaxRequests; index += 1) {
+        await caller.searchStudent({
+          soCMT: "012345678901",
+          loaiDaoTao: "oto",
+        });
+      }
+
+      await expect(
+        caller.searchStudent({
+          soCMT: "012345678901",
+          loaiDaoTao: "oto",
+        })
+      ).rejects.toMatchObject({
+        code: "TOO_MANY_REQUESTS",
+      });
+
+      const loggedText = [
+        ...consoleLog.mock.calls,
+        ...consoleWarn.mock.calls,
+        ...consoleError.mock.calls,
+      ]
+        .flat()
+        .join(" ");
+
+      expect(loggedText).not.toContain("012345678901");
+    } finally {
+      consoleLog.mockRestore();
+      consoleWarn.mockRestore();
+      consoleError.mockRestore();
+    }
   });
 });

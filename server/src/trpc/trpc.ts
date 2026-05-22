@@ -35,4 +35,5 @@ const syncAuthMiddleware = t.middleware(({ ctx, next }) => {
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
+export const middleware = t.middleware;
 export const syncProcedure = t.procedure.use(syncAuthMiddleware);
