@@ -119,14 +119,15 @@ Production sync bắt buộc dùng HTTPS/TLS.
 
 Quy tắc:
 
-- `API_URL` production trong `sync-tool/.env` phải bắt đầu bằng `https://`.
-- Không cấu hình sync production qua HTTP public.
+- `API_URL` production trong `sync-tool/.env` phải là `https://thanhcongdaklak.edu.vn`.
+- Không cấu hình sync production qua HTTP public; không gửi `X-SYNC-SECRET` qua HTTP public.
 - `X-SYNC-SECRET`, payload học viên, metadata và ảnh upload phải được bảo vệ trên đường truyền.
+- Nginx hoặc reverse proxy production phải cấu hình SSL/TLS hợp lệ.
 - HTTP nên redirect sang HTTPS.
 - Có thể bật HSTS sau khi domain và chứng chỉ SSL ổn định.
 - Có kế hoạch rotate `SYNC_SECRET` nếu nghi ngờ bị lộ.
 
-Ngoại lệ: local development được phép dùng `http://localhost:3000`.
+Ngoại lệ: local development được phép dùng `http://localhost:3000`. Production public bắt buộc dùng `https://`.
 
 ## 9. Troubleshooting
 
