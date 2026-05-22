@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import { syncPhotoRouter } from "./routes/syncPhoto.js";
+import { configureStudentUploads } from "./services/studentUploads.js";
 import { createContext } from "./trpc/context.js";
 import { appRouter } from "./trpc/routers/index.js";
 
@@ -15,6 +16,8 @@ app.use(
     origin: process.env.CORS_ORIGIN || false,
   })
 );
+
+configureStudentUploads(app);
 
 app.use(
   "/api/trpc",
