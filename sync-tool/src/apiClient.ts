@@ -1,3 +1,5 @@
+import { normalizeApiUrlForSync } from "./config.js";
+
 export type SyncPushRecord = {
   MaDK: string;
   HoVaTen: string;
@@ -50,6 +52,7 @@ export type SyncApiClientConfig = {
 export type SyncApiClientEnv = {
   API_URL?: string;
   SYNC_SECRET?: string;
+  NODE_ENV?: string;
 };
 
 type ResolvedSyncApiClientConfig = {
@@ -151,19 +154,15 @@ export function resolveSyncApiClientConfig(
   config: SyncApiClientConfig = {},
   env: SyncApiClientEnv = process.env
 ): ResolvedSyncApiClientConfig {
-  const apiUrl = (config.apiUrl ?? env.API_URL)?.trim();
+  const apiUrl = normalizeApiUrlForSync(config.apiUrl ?? env.API_URL, env);
   const syncSecret = (config.syncSecret ?? env.SYNC_SECRET)?.trim();
-
-  if (!apiUrl) {
-    throw new SyncApiClientError("API_URL is required");
-  }
 
   if (!syncSecret) {
     throw new SyncApiClientError("SYNC_SECRET is required");
   }
 
   return {
-    apiUrl: trimTrailingSlash(apiUrl),
+    apiUrl,
     syncSecret,
     fetchFn: config.fetchFn ?? fetch,
   };

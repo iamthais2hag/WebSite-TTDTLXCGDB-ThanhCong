@@ -59,6 +59,27 @@ describe("sync-tool API client", () => {
     expect(client).toBeInstanceOf(SyncApiClient);
   });
 
+  it("rejects public HTTP production API_URL before sending sync secret", async () => {
+    const fetchMock = createFetchMock({});
+
+    expect(() =>
+      createSyncApiClient(
+        {
+          fetchFn: fetchMock as FetchLike,
+        },
+        {
+          API_URL: "http://example.com",
+          SYNC_SECRET: testSecret,
+          NODE_ENV: "production",
+        }
+      )
+    ).toThrow(
+      "Production sync API_URL must use HTTPS unless it points to localhost"
+    );
+
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("pushBatch sends tRPC sync.pushBatch request with sync secret header", async () => {
     const fetchMock = createFetchMock({
       result: {
