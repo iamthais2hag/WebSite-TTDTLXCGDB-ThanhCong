@@ -1097,6 +1097,25 @@ pnpm build
 - Bật/tắt tra cứu từ Admin.
 - Redis rate limit nếu production nhiều instance.
 
+#### Lookup abuse protection và cảnh báo sử dụng hợp lệ
+
+**Yêu cầu tương lai, chưa triển khai code ở giai đoạn hiện tại:**
+- Khi người dùng bấm Tra cứu, hiển thị cảnh báo:
+  "Tôi cam kết chỉ tra cứu thông tin của chính mình hoặc người mà tôi được ủy quyền hợp pháp. Tôi không sử dụng chức năng này để thu thập, dò quét hoặc tra cứu trái phép thông tin cá nhân của người khác."
+- Nút Tra cứu chỉ bật sau khi người dùng xác nhận checkbox.
+- Có thể tạo anonymous `deviceId` bằng UUID ngẫu nhiên lưu trong cookie/localStorage.
+- `deviceId` không phải serial máy, không phải IMEI, không phải thông tin phần cứng thật.
+- Frontend có thể gửi kèm metadata cơ bản: `deviceId`, timezone, language, screen width/height/devicePixelRatio, platform/browser tương đối.
+- Backend lấy thêm IP và User-Agent từ request.
+- Log lookup phải an toàn: không log raw SoCMT, ưu tiên hash hoặc mask SoCMT, không log secret/password.
+- Có thể rate limit theo IP + `deviceId`.
+- Có thể tạm blacklist theo IP/`deviceId` nếu tra cứu quá nhiều CCCD khác nhau hoặc vượt limit nhiều lần.
+- Blacklist nên có thời hạn, ví dụ 1 giờ, 24 giờ, 7 ngày, không mặc định khóa vĩnh viễn.
+- Không cố đọc serial ổ cứng, mainboard, IMEI, MAC address, danh sách file hoặc thông tin phần cứng định danh sâu.
+- Không dùng fingerprint xâm lấn như canvas/audio/font fingerprint nếu chưa được xác nhận riêng.
+- Không yêu cầu người dùng cài phần mềm riêng.
+- Giai đoạn 1 Task 17 vẫn chỉ triển khai rate limit IP cơ bản.
+
 **Tiêu chí hoàn thành:**
 - Không làm lộ SoCMT gốc.
 - Có cấu hình bật/tắt rõ ràng.
@@ -1133,4 +1152,3 @@ pnpm --filter server test
 pnpm --filter sync-tool test
 pnpm check
 ```
-
