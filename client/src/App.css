@@ -1,6 +1,17 @@
 :root {
-  color: #143033;
-  background: #f6fbfb;
+  --brand-blue: #0040a0;
+  --brand-blue-dark: #001060;
+  --brand-red: #d71920;
+  --brand-gold: #f4b41a;
+  --surface: #ffffff;
+  --surface-soft: #f7f8fb;
+  --surface-blue-soft: #eef2f8;
+  --border-soft: #d8e0ee;
+  --text-main: #142033;
+  --text-muted: #465669;
+
+  color: var(--text-main);
+  background: var(--surface-soft);
   font-family:
     Arial,
     "Helvetica Neue",
@@ -17,7 +28,12 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    linear-gradient(180deg, #eef8f8 0%, #ffffff 42%, #f7fbfb 100%);
+    linear-gradient(
+      180deg,
+      var(--surface-blue-soft) 0%,
+      var(--surface) 42%,
+      var(--surface-soft) 100%
+    );
 }
 
 a {
@@ -35,9 +51,9 @@ a {
   position: sticky;
   top: 0;
   z-index: 10;
-  border-bottom: 1px solid #d7ecee;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 6px 18px rgba(15, 116, 124, 0.08);
+  border-bottom: 1px solid var(--border-soft);
+  background: #fffffff5;
+  box-shadow: 0 6px 18px #00106014;
 }
 
 .site-header__inner,
@@ -76,7 +92,7 @@ a {
 }
 
 .site-brand__eyebrow {
-  color: #d71920;
+  color: var(--brand-red);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -84,7 +100,7 @@ a {
 }
 
 .site-brand strong {
-  color: #0f747c;
+  color: var(--brand-blue);
   font-size: 1.04rem;
 }
 
@@ -104,7 +120,7 @@ a {
   min-height: 40px;
   padding: 8px 13px;
   border-radius: 999px;
-  color: #164347;
+  color: var(--brand-blue-dark);
   font-size: 0.95rem;
   font-weight: 700;
   white-space: nowrap;
@@ -112,8 +128,8 @@ a {
 
 .site-nav__link:hover,
 .site-nav__link:focus-visible {
-  color: #ffffff;
-  background: #0f747c;
+  color: var(--surface);
+  background: var(--brand-blue);
   outline: none;
 }
 
@@ -139,15 +155,15 @@ a {
   margin: 0;
   padding: 7px 12px;
   border-radius: 999px;
-  color: #0f747c;
-  background: #e1f2f3;
+  color: var(--brand-blue-dark);
+  background: var(--surface-blue-soft);
   font-size: 0.86rem;
   font-weight: 700;
 }
 
 .hero-banner h1 {
   margin: 0;
-  color: #0e3f44;
+  color: var(--brand-blue-dark);
   font-size: clamp(2rem, 4vw, 3.15rem);
   line-height: 1.08;
 }
@@ -155,7 +171,7 @@ a {
 .hero-banner__lead {
   max-width: 620px;
   margin: 0;
-  color: #425c60;
+  color: var(--text-muted);
   font-size: 1.08rem;
   line-height: 1.72;
 }
@@ -174,16 +190,16 @@ a {
   min-height: 44px;
   padding: 10px 18px;
   border-radius: 8px;
-  border: 1px solid #0f747c;
-  color: #0f747c;
-  background: #ffffff;
+  border: 1px solid var(--brand-blue);
+  color: var(--brand-blue);
+  background: var(--surface);
   font-weight: 700;
 }
 
 .button-link--primary {
-  color: #ffffff;
-  background: #d71920;
-  border-color: #d71920;
+  color: var(--surface);
+  background: var(--brand-red);
+  border-color: var(--brand-red);
 }
 
 .hero-banner__media {
@@ -195,7 +211,6 @@ a {
 
 .hero-banner__mascot {
   width: min(100%, 520px);
-  filter: drop-shadow(0 18px 24px rgba(20, 48, 51, 0.18));
 }
 
 .home-overview {
@@ -208,28 +223,28 @@ a {
 .info-card {
   min-height: 156px;
   padding: 22px;
-  border: 1px solid #dcecee;
+  border: 1px solid var(--border-soft);
   border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 8px 22px rgba(24, 81, 86, 0.08);
+  background: var(--surface);
+  box-shadow: 0 8px 22px #00106014;
 }
 
 .info-card h2 {
   margin: 0 0 10px;
-  color: #0f747c;
+  color: var(--brand-blue);
   font-size: 1.1rem;
 }
 
 .info-card p {
   margin: 0;
-  color: #4d6468;
+  color: var(--text-muted);
   line-height: 1.62;
 }
 
 .site-footer {
-  border-top: 1px solid #d7ecee;
-  background: #0f747c;
-  color: #ffffff;
+  border-top: 1px solid var(--border-soft);
+  background: var(--brand-blue-dark);
+  color: var(--surface);
 }
 
 .site-footer__inner {
@@ -247,7 +262,7 @@ a {
 .site-footer__copy {
   max-width: 560px;
   margin: 0;
-  color: rgba(255, 255, 255, 0.84);
+  color: #ffffffe0;
   line-height: 1.55;
 }
 
@@ -260,7 +275,7 @@ a {
 }
 
 .site-footer__nav a {
-  color: rgba(255, 255, 255, 0.9);
+  color: #ffffffe8;
   font-weight: 700;
 }
 
