@@ -2,6 +2,7 @@ export const syncToolPackageReady = true;
 
 export * from "./apiClient.js";
 export * from "./config.js";
+export * from "./debugTool.js";
 export * from "./imageBatch.js";
 export * from "./imageAdapter.js";
 export * from "./imageOptimization.js";
