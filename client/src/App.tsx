@@ -1,5 +1,5 @@
 import "./App.css";
-import mascotCar from "./assets/mascot-car.png";
+import carVideo from "./assets/car.mp4";
 import { Layout } from "./components/layout/Layout";
 
 export function App() {
@@ -24,11 +24,14 @@ export function App() {
         </div>
 
         <div className="hero-banner__media" aria-hidden="true">
-          <img
+          <video
+            autoPlay
             className="hero-banner__mascot"
-            src={mascotCar}
-            alt=""
-            style={{ height: "auto", maxWidth: "100%", objectFit: "contain" }}
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            src={carVideo}
           />
         </div>
       </section>

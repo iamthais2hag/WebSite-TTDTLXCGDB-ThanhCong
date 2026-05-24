@@ -30,12 +30,19 @@ describe("App shell", () => {
     expect(markup).toContain("Tuyển sinh");
   });
 
-  it("keeps identity assets proportional and avoids top-page contact shortcuts", () => {
+  it("renders the official car video proportionally and avoids top-page contact shortcuts", () => {
     const markup = renderToStaticMarkup(createElement(App));
     const normalizedMarkup = markup.toLowerCase();
 
     expect(markup).toContain("site-brand__logo");
     expect(markup).toContain("hero-banner__mascot");
+    expect(normalizedMarkup).toContain("<video");
+    expect(normalizedMarkup).toContain("autoplay=\"\"");
+    expect(normalizedMarkup).toContain("muted=\"\"");
+    expect(normalizedMarkup).toContain("loop=\"\"");
+    expect(normalizedMarkup).toContain("playsinline=\"\"");
+    expect(normalizedMarkup).toContain("preload=\"metadata\"");
+    expect(normalizedMarkup).toContain("car.mp4");
     expect(markup).toContain("object-fit:contain");
     expect(markup).toContain("height:auto");
     for (const forbiddenText of ["za" + "lo", "hot" + "line"]) {
