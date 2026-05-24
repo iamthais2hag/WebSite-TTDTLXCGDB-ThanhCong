@@ -25,6 +25,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.2.6(react@19.2.6)
+      shared:
+        specifier: workspace:*
+        version: link:../shared
       vite:
         specifier: ^7.0.0
         version: 7.3.3(@types/node@24.12.4)(tsx@4.22.3)
