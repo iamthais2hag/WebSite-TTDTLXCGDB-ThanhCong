@@ -1,8 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { App } from "./App";
 import { APP_NAV_ITEMS } from "./siteConfig";
+
+const appCss = readFileSync(
+  fileURLToPath(new URL("./App.css", import.meta.url)),
+  "utf8",
+);
 
 describe("App shell", () => {
   it("keeps the expected public navigation order", () => {
@@ -30,6 +37,32 @@ describe("App shell", () => {
     expect(markup).toContain("Tuyển sinh");
   });
 
+  it("renders the basic public pages in the approved order", () => {
+    const markup = renderToStaticMarkup(createElement(App));
+    const homeIndex = markup.indexOf("Trung tâm Đào tạo Lái xe Thành Công");
+    const lookupIndex = markup.indexOf("Khu vực tra cứu thông tin đăng ký học");
+    const announcementsIndex = markup.indexOf("Thông báo mới");
+    const legalIndex = markup.indexOf("Văn bản và hướng dẫn liên quan");
+    const enrollmentIndex = markup.indexOf("Các nhóm đào tạo");
+
+    expect(homeIndex).toBeGreaterThanOrEqual(0);
+    expect(lookupIndex).toBeGreaterThan(homeIndex);
+    expect(announcementsIndex).toBeGreaterThan(lookupIndex);
+    expect(legalIndex).toBeGreaterThan(announcementsIndex);
+    expect(enrollmentIndex).toBeGreaterThan(legalIndex);
+  });
+
+  it("renders all approved enrollment groups", () => {
+    const markup = renderToStaticMarkup(createElement(App));
+
+    expect(markup).toContain("A1");
+    expect(markup).toContain("A/AM");
+    expect(markup).toContain("B số sàn/số cơ khí/số tự động");
+    expect(markup).toContain("C1");
+    expect(markup).toContain(">C<");
+    expect(markup).toContain("Nâng hạng");
+  });
+
   it("renders the official car video proportionally and avoids top-page contact shortcuts", () => {
     const markup = renderToStaticMarkup(createElement(App));
     const normalizedMarkup = markup.toLowerCase();
@@ -43,8 +76,8 @@ describe("App shell", () => {
     expect(normalizedMarkup).toContain("playsinline=\"\"");
     expect(normalizedMarkup).toContain("preload=\"metadata\"");
     expect(normalizedMarkup).toContain("car.mp4");
-    expect(markup).toContain("object-fit:contain");
-    expect(markup).toContain("height:auto");
+    expect(appCss).toContain("object-fit: contain");
+    expect(appCss).toContain("height: auto");
     for (const forbiddenText of ["za" + "lo", "hot" + "line"]) {
       expect(normalizedMarkup).not.toContain(forbiddenText);
     }
