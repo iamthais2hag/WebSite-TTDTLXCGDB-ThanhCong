@@ -889,7 +889,7 @@ grep -R "object-fit: cover" client/src && exit 1 || exit 0
 **Mục tiêu:** Đưa đúng bộ ảnh chính thức vào frontend source.
 
 **Công việc:**
-- Thêm `logo-thanh-cong.png`, `mascot-car.png`, `A1.png`, `AM.png`, `BSCK.png`, `C1.png`, `C.png`, `NH.png` vào `client/src/assets/`.
+- Thêm `logo-thanh-cong.webp`, `car.mp4`, `a1.png`, `am.png`, `b.png`, `c1.png`, `c.png`, `nh.png` vào `client/src/assets/`.
 - Giữ nguyên tên file.
 - Không thay đổi màu xe, logo, biển tập lái, tem nhận diện, bố cục ảnh.
 - Không thêm ảnh/hạng A2, D, E, F nếu chưa xác nhận.
@@ -901,14 +901,14 @@ grep -R "object-fit: cover" client/src && exit 1 || exit 0
 
 **Lệnh kiểm tra:**
 ```bash
-test -f client/src/assets/logo-thanh-cong.png
-test -f client/src/assets/mascot-car.png
-test -f client/src/assets/A1.png
-test -f client/src/assets/AM.png
-test -f client/src/assets/BSCK.png
-test -f client/src/assets/C1.png
-test -f client/src/assets/C.png
-test -f client/src/assets/NH.png
+test -f client/src/assets/logo-thanh-cong.webp
+test -f client/src/assets/car.mp4
+test -f client/src/assets/a1.png
+test -f client/src/assets/am.png
+test -f client/src/assets/b.png
+test -f client/src/assets/c1.png
+test -f client/src/assets/c.png
+test -f client/src/assets/nh.png
 git status --short
 ```
 

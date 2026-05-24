@@ -335,8 +335,8 @@ Website sử dụng bộ hình ảnh chính thức do Trung tâm cung cấp. Cá
 
 | File | Mô tả |
 |------|-------|
-| `logo-thanh-cong.png` | Logo chính thức của Trung tâm |
-| `mascot-car.png` | Xe mascot/xe đại diện hiện tại của website, giữ nguyên như bản đang dùng |
+| `logo-thanh-cong.webp` | Logo chính thức của Trung tâm |
+| `car.mp4` | Video mascot/xe đại diện chính thức của website, giữ nguyên như bản đang dùng |
 
 ### Hình ảnh phục vụ phần tuyển sinh / khóa học
 
@@ -344,12 +344,12 @@ Các ảnh xe dùng để hiển thị trong phần tuyển sinh, khóa học, h
 
 | File | Mô tả |
 |------|-------|
-| `A1.png` | Mô tô hạng A1 |
-| `AM.png` | Mô tô hạng A/AM |
-| `BSCK.png` | Hạng B số sàn, B số cơ khí và B số tự động |
-| `C1.png` | Ô tô tải hạng C1 |
-| `C.png` | Ô tô tải hạng C |
-| `NH.png` | Nâng hạng |
+| `a1.png` | Mô tô hạng A1 |
+| `am.png` | Mô tô hạng A/AM |
+| `b.png` | Hạng B số sàn, B số cơ khí và B số tự động |
+| `c1.png` | Ô tô tải hạng C1 |
+| `c.png` | Ô tô tải hạng C |
+| `nh.png` | Nâng hạng |
 
 ### Quy tắc sử dụng hình ảnh
 

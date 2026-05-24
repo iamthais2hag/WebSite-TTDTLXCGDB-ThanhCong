@@ -1,4 +1,4 @@
-import logoThanhCong from "../../assets/logo-thanh-cong.png";
+import logoThanhCong from "../../assets/logo-thanh-cong.webp";
 import { APP_NAV_ITEMS, SITE_NAME } from "../../siteConfig";
 
 const identityImageStyle = {

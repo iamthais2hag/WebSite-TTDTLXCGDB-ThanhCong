@@ -115,14 +115,14 @@ Các file sau đặt tại `client/src/assets/`:
 
 | File | Mô tả |
 |------|-------|
-| `logo-thanh-cong.png` | Logo chính thức của Trung tâm |
-| `mascot-car.png` | Xe mascot/xe đại diện |
-| `A1.png` | Mô tô hạng A1 |
-| `AM.png` | Mô tô hạng A/AM |
-| `BSCK.png` | Hạng B số sàn, B số cơ khí và B số tự động |
-| `C1.png` | Ô tô tải hạng C1 |
-| `C.png` | Ô tô tải hạng C |
-| `NH.png` | Nâng hạng |
+| `logo-thanh-cong.webp` | Logo chính thức của Trung tâm |
+| `car.mp4` | Video mascot/xe đại diện chính thức |
+| `a1.png` | Mô tô hạng A1 |
+| `am.png` | Mô tô hạng A/AM |
+| `b.png` | Hạng B số sàn, B số cơ khí và B số tự động |
+| `c1.png` | Ô tô tải hạng C1 |
+| `c.png` | Ô tô tải hạng C |
+| `nh.png` | Nâng hạng |
 
 ### Quy tắc sử dụng assets
 
