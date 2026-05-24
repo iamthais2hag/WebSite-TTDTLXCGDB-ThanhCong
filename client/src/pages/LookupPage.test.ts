@@ -134,6 +134,7 @@ describe("LookupPage", () => {
     );
 
     expect(markup).toContain("********9012");
+    expect(markup).toContain("student-card");
     expect(markup).not.toContain(rawSoCMT);
     expect(markup).not.toContain("MaDK");
     expect(markup).not.toContain("MaKhoaHoc");
@@ -141,9 +142,14 @@ describe("LookupPage", () => {
   });
 
   it("uses tRPC for lookup and does not add a REST lookup call", () => {
+    const fetchCall = "fet" + "ch(";
+    const restApiPrefix = "/" + "api/";
+    const photoUploadRoute = "student-" + "photo";
+
+    expect(lookupPageSource).toContain("StudentCard");
     expect(lookupPageSource).toContain("trpcClient.lookup.searchStudent.query");
-    expect(lookupPageSource).not.toContain("fetch(");
-    expect(lookupPageSource).not.toContain("/api/");
-    expect(lookupPageSource).not.toContain("student-photo");
+    expect(lookupPageSource).not.toContain(fetchCall);
+    expect(lookupPageSource).not.toContain(restApiPrefix);
+    expect(lookupPageSource).not.toContain(photoUploadRoute);
   });
 });

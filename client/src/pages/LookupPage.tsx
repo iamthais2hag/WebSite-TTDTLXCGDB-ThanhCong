@@ -5,6 +5,7 @@ import {
   type StudentLookupPublic,
   lookupSearchInputSchema,
 } from "shared";
+import { StudentCard } from "../components/StudentCard";
 import { trpcClient } from "../lib/trpc";
 
 type LookupSearch = (input: LookupSearchInput) => Promise<StudentLookupPublic[]>;
@@ -122,38 +123,10 @@ export function LookupResultList({ state }: { state: LookupState }) {
   return (
     <div className="lookup-results" aria-label="Kết quả tra cứu học viên">
       {state.results.map((student, index) => (
-        <article
-          className="lookup-result"
+        <StudentCard
           key={`${student.soCMTMasked}-${student.tenKhoaHoc ?? "khoa"}-${index}`}
-        >
-          <h3>{student.hoVaTen}</h3>
-          <dl>
-            <div>
-              <dt>CCCD</dt>
-              <dd>{student.soCMTMasked}</dd>
-            </div>
-            <div>
-              <dt>Ngày sinh</dt>
-              <dd>{student.ngaySinh}</dd>
-            </div>
-            <div>
-              <dt>Giới tính</dt>
-              <dd>{student.gioiTinh}</dd>
-            </div>
-            <div>
-              <dt>Khóa học</dt>
-              <dd>{student.tenKhoaHoc ?? "Đang cập nhật"}</dd>
-            </div>
-            <div>
-              <dt>Hạng</dt>
-              <dd>{student.hang ?? "Đang cập nhật"}</dd>
-            </div>
-            <div>
-              <dt>Địa chỉ</dt>
-              <dd>{student.diaChi ?? "Đang cập nhật"}</dd>
-            </div>
-          </dl>
-        </article>
+          student={student}
+        />
       ))}
     </div>
   );

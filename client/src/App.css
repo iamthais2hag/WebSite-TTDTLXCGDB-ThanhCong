@@ -340,37 +340,78 @@ a {
   padding: 14px;
 }
 
-.lookup-result {
+.student-card {
+  display: grid;
+  grid-template-columns: minmax(112px, 152px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
   padding: 18px;
   border: 1px solid var(--border-soft);
   border-radius: 8px;
   background: var(--surface);
 }
 
-.lookup-result h3 {
+.student-card__photo-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 152px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: var(--surface-blue-soft);
+}
+
+.student-card__photo {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.student-card__photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.student-card__body {
+  min-width: 0;
+}
+
+.student-card h3 {
   margin: 0 0 12px;
   color: var(--brand-blue);
   font-size: 1.08rem;
 }
 
-.lookup-result dl {
+.student-card dl {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px 16px;
   margin: 0;
 }
 
-.lookup-result div {
+.student-card dl div {
   min-width: 0;
 }
 
-.lookup-result dt {
+.student-card dt {
   color: var(--brand-blue-dark);
   font-size: 0.78rem;
   font-weight: 700;
 }
 
-.lookup-result dd {
+.student-card dd {
   margin: 4px 0 0;
   color: var(--text-muted);
   line-height: 1.55;
@@ -539,7 +580,8 @@ a {
   }
 
   .lookup-form,
-  .lookup-result dl,
+  .student-card,
+  .student-card dl,
   .training-grid {
     grid-template-columns: 1fr;
   }
