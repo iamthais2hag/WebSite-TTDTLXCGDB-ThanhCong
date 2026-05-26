@@ -6,8 +6,12 @@ export const APP_NAV_ITEMS = [
     label: "Trang chủ",
   },
   {
+    href: "#tuyen-sinh",
+    label: "Tuyển sinh",
+  },
+  {
     href: "#tra-cuu",
-    label: "Tra cứu học viên",
+    label: "Tra cứu",
   },
   {
     href: "#thong-bao",
@@ -16,9 +20,5 @@ export const APP_NAV_ITEMS = [
   {
     href: "#phap-ly",
     label: "Pháp lý",
-  },
-  {
-    href: "#tuyen-sinh",
-    label: "Tuyển sinh",
   },
 ] as const;

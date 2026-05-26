@@ -10,10 +10,10 @@ export function App() {
   return (
     <Layout>
       <HomePage />
+      <EnrollmentPage />
       <LookupPage />
       <AnnouncementsPage />
       <LegalPage />
-      <EnrollmentPage />
     </Layout>
   );
 }

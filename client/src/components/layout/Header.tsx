@@ -21,28 +21,36 @@ export function Header() {
             />
           </span>
           <span className="site-brand__text">
-            <span className="site-brand__agency">Trung tâm Đào tạo Lái xe</span>
+            <span className="site-brand__agency">
+              TRUNG TÂM ĐÀO TẠO LÁI XE CƠ GIỚI ĐƯỜNG BỘ
+            </span>
             <strong>THÀNH CÔNG</strong>
             <span className="site-brand__tagline">
-              Vững tay lái, an toàn mọi hành trình
+              Vững tay lái – Vững bước thành công
             </span>
           </span>
         </a>
 
-        <nav className="site-nav" aria-label="Điều hướng chính">
-          <ul className="site-nav__list">
-            {APP_NAV_ITEMS.map((item, index) => (
-              <li className="site-nav__item" key={item.href}>
-                <a
-                  className={`site-nav__link${index === 0 ? " site-nav__link--active" : ""}`}
-                  href={item.href}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <div className="site-header__nav-group">
+          <nav className="site-nav" aria-label="Điều hướng chính">
+            <ul className="site-nav__list">
+              {APP_NAV_ITEMS.map((item, index) => (
+                <li className="site-nav__item" key={item.href}>
+                  <a
+                    className={`site-nav__link${index === 0 ? " site-nav__link--active" : ""}`}
+                    href={item.href}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <a className="header-consult-button" href="#tuyen-sinh">
+            Đăng ký tư vấn
+          </a>
+        </div>
       </div>
     </header>
   );

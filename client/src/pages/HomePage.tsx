@@ -1,22 +1,47 @@
 import carVideo from "../assets/car.mp4";
 
-const heroBadges = ["Khai giảng liên tục", "Tư vấn rõ ràng"] as const;
-const trustBadges = ["Uy tín", "Tận tâm", "Bài bản"] as const;
+const heroBadges = [
+  "Khai giảng liên tục",
+  "Tư vấn rõ ràng",
+  "Học thực hành bài bản",
+] as const;
+
+const trustBadges = [
+  {
+    label: "Khai giảng",
+    value: "Liên tục",
+  },
+  {
+    label: "Tư vấn",
+    value: "Rõ ràng",
+  },
+  {
+    label: "Uy tín",
+    value: "Thông tin rõ ràng",
+  },
+  {
+    label: "Tận tâm",
+    value: "Đồng hành học viên",
+  },
+  {
+    label: "Bài bản",
+    value: "Học đúng chuẩn",
+  },
+] as const;
 
 export function HomePage() {
   return (
     <section className="hero-banner" id="trang-chu" aria-labelledby="home-title">
       <div className="hero-banner__content">
-        <p className="hero-banner__eyebrow">Website chính thức</p>
+        <p className="hero-banner__eyebrow">TUYỂN SINH THƯỜNG XUYÊN</p>
         <h1 id="home-title">
-          Trung tâm Đào tạo Lái xe <span>Thành Công</span>
+          <span>Học lái xe bài bản,</span>
+          <span>sát hạch đúng chuẩn</span>
         </h1>
-        <p className="hero-banner__slogan">
-          Vững tay lái, an toàn mọi hành trình
-        </p>
         <p className="hero-banner__lead">
-          Kênh thông tin chính thống về đào tạo lái xe, tra cứu học viên,
-          thông báo và văn bản pháp lý của Trung tâm.
+          Đào tạo các hạng mô tô, ô tô và nâng hạng giấy phép lái xe tại khu
+          vực Đắk Lắk với quy trình tư vấn rõ ràng, chương trình học bám sát
+          quy định và đội ngũ hỗ trợ tận tâm.
         </p>
         <div className="hero-banner__badges" aria-label="Điểm nổi bật">
           {heroBadges.map((badge) => (
@@ -24,11 +49,11 @@ export function HomePage() {
           ))}
         </div>
         <div className="hero-banner__actions" aria-label="Lối tắt nội dung chính">
-          <a className="button-link button-link--primary" href="#tra-cuu">
-            Tra cứu học viên
+          <a className="button-link button-link--primary" href="#tuyen-sinh">
+            Xem khóa học
           </a>
-          <a className="button-link" href="#thong-bao">
-            Xem thông báo
+          <a className="button-link button-link--call" href="tel:0926236239">
+            Gọi 0926 236 239
           </a>
         </div>
       </div>
@@ -47,7 +72,10 @@ export function HomePage() {
           />
           <div className="hero-card__badges">
             {trustBadges.map((badge) => (
-              <span key={badge}>{badge}</span>
+              <span className="hero-card__badge" key={badge.label}>
+                <strong>{badge.label}</strong>
+                <small>{badge.value}</small>
+              </span>
             ))}
           </div>
         </div>
