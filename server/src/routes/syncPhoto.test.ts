@@ -3,7 +3,7 @@ import { createServer } from "node:http";
 import os from "node:os";
 import path from "node:path";
 import express from "express";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createSyncPhotoRouter } from "./syncPhoto.js";
 
 const tempDirs: string[] = [];
@@ -168,6 +168,41 @@ describe("POST /api/sync/student-photo", () => {
         success: false,
       });
     } finally {
+      await server.close();
+    }
+  });
+
+  it("does not expose or log sync secrets when auth fails", async () => {
+    const server = await startUploadServer();
+    const wrongSecret = "wrong-upload-secret";
+    const consoleLog = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const consoleWarn = vi
+      .spyOn(console, "warn")
+      .mockImplementation(() => undefined);
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    try {
+      const response = await uploadPhoto(server.url, createPhotoForm(), wrongSecret);
+      const bodyText = await response.text();
+      const loggedText = [
+        ...consoleLog.mock.calls,
+        ...consoleWarn.mock.calls,
+        ...consoleError.mock.calls,
+      ]
+        .flat()
+        .join(" ");
+
+      expect(response.status).toBe(401);
+      expect(bodyText).not.toContain(testSecret);
+      expect(bodyText).not.toContain(wrongSecret);
+      expect(loggedText).not.toContain(testSecret);
+      expect(loggedText).not.toContain(wrongSecret);
+    } finally {
+      consoleLog.mockRestore();
+      consoleWarn.mockRestore();
+      consoleError.mockRestore();
       await server.close();
     }
   });
