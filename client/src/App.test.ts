@@ -28,6 +28,8 @@ describe("App shell", () => {
     const markup = renderToStaticMarkup(createElement(App));
 
     expect(markup).toContain("site-header");
+    expect(markup).toContain("site-brand__mark");
+    expect(markup).toContain("site-nav__link--active");
     expect(markup).toContain("Điều hướng chính");
     expect(markup).toContain("site-footer");
     expect(markup).toContain("Trang chủ");
@@ -68,6 +70,10 @@ describe("App shell", () => {
     const normalizedMarkup = markup.toLowerCase();
 
     expect(markup).toContain("site-brand__logo");
+    expect(markup).toContain("hero-card");
+    expect(markup).toContain("Uy tín");
+    expect(markup).toContain("Tận tâm");
+    expect(markup).toContain("Bài bản");
     expect(markup).toContain("hero-banner__mascot");
     expect(normalizedMarkup).toContain("<video");
     expect(normalizedMarkup).toContain("autoplay=\"\"");

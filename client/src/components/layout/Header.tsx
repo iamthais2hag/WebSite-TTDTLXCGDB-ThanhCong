@@ -12,23 +12,31 @@ export function Header() {
     <header className="site-header">
       <div className="site-header__inner">
         <a className="site-brand" href="#trang-chu" aria-label={SITE_NAME}>
-          <img
-            className="site-brand__logo"
-            src={logoThanhCong}
-            alt="Logo Trung tâm Đào tạo Lái xe Thành Công"
-            style={identityImageStyle}
-          />
+          <span className="site-brand__mark">
+            <img
+              className="site-brand__logo"
+              src={logoThanhCong}
+              alt="Logo Trung tâm Đào tạo Lái xe Thành Công"
+              style={identityImageStyle}
+            />
+          </span>
           <span className="site-brand__text">
-            <span className="site-brand__eyebrow">Website chính thức</span>
-            <strong>{SITE_NAME}</strong>
+            <span className="site-brand__agency">Trung tâm Đào tạo Lái xe</span>
+            <strong>THÀNH CÔNG</strong>
+            <span className="site-brand__tagline">
+              Vững tay lái, an toàn mọi hành trình
+            </span>
           </span>
         </a>
 
         <nav className="site-nav" aria-label="Điều hướng chính">
           <ul className="site-nav__list">
-            {APP_NAV_ITEMS.map((item) => (
+            {APP_NAV_ITEMS.map((item, index) => (
               <li className="site-nav__item" key={item.href}>
-                <a className="site-nav__link" href={item.href}>
+                <a
+                  className={`site-nav__link${index === 0 ? " site-nav__link--active" : ""}`}
+                  href={item.href}
+                >
                   {item.label}
                 </a>
               </li>
