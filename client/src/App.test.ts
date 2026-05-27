@@ -29,7 +29,7 @@ describe("App shell", () => {
     const markup = renderToStaticMarkup(createElement(App));
 
     expect(markup).toContain("site-header");
-    expect(markup).toContain("site-brand__mark");
+    expect(markup).toContain("site-brand__logo");
     expect(markup).toContain("site-nav__link--active");
     expect(markup).toContain("Điều hướng chính");
     expect(markup).toContain("site-footer");
@@ -84,6 +84,7 @@ describe("App shell", () => {
     expect(markup).toContain("sát hạch đúng chuẩn");
     expect(markup).toContain("Xem khóa học");
     expect(markup).toContain("Đăng ký tư vấn");
+    expect(markup).toContain("Gọi 0926 236 239");
     expect(markup).toContain("Khai giảng liên tục");
     expect(markup).toContain("Tư vấn rõ ràng");
     expect(markup).toContain("Học thực hành bài bản");
