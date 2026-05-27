@@ -1,5 +1,5 @@
+import logoThanhCong from "../../assets/logo-thanh-cong.webp";
 import {
-  APP_NAV_ITEMS,
   CONSULT_PHONE,
   SITE_AGENCY_NAME,
   SITE_BRAND_NAME,
@@ -7,32 +7,53 @@ import {
   SITE_SLOGAN,
 } from "../../siteConfig";
 
+const FOOTER_YEAR = 2026;
+
 export function Footer() {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
-        <div>
-          <p className="site-footer__eyebrow">{SITE_AGENCY_NAME}</p>
-          <p className="site-footer__title">{SITE_BRAND_NAME}</p>
+        <div className="site-footer__brand">
+          <div className="site-footer__identity">
+            <img
+              className="site-footer__logo"
+              src={logoThanhCong}
+              alt="Logo Trung tâm Thành Công"
+            />
+            <div>
+              <p className="site-footer__eyebrow">{SITE_AGENCY_NAME}</p>
+              <p className="site-footer__title">{SITE_BRAND_NAME}</p>
+              <p className="site-footer__slogan">{SITE_SLOGAN}</p>
+            </div>
+          </div>
           <p className="site-footer__copy">
-            {SITE_NAME} là kênh thông tin chính thức về đào tạo lái xe, tra cứu
-            học viên, thông báo và văn bản pháp lý.
+            {SITE_NAME}. Đào tạo, tư vấn hồ sơ và đồng hành cùng học viên trong quá trình học lái
+            xe tại khu vực Đắk Lắk.
           </p>
-          <p className="site-footer__slogan">{SITE_SLOGAN}</p>
         </div>
 
-        <nav className="site-footer__nav" aria-label="Điều hướng cuối trang">
-          {APP_NAV_ITEMS.map((item) => (
-            <a key={item.href} href={item.href}>
-              {item.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className="site-footer__contact">
-          <span>Tư vấn</span>
-          <strong>{CONSULT_PHONE}</strong>
+        <div className="site-footer__column">
+          <h2 className="site-footer__heading">Thông tin trung tâm</h2>
+          <ul className="site-footer__list">
+            <li>Trụ sở: Đắk Lắk</li>
+            <li>Sân tập: Đang cập nhật</li>
+            <li>MST: Đang cập nhật</li>
+            <li>Khu vực: Đắk Lắk</li>
+          </ul>
         </div>
+
+        <div className="site-footer__column">
+          <h2 className="site-footer__heading">Liên hệ</h2>
+          <ul className="site-footer__list">
+            <li>Zalo OA</li>
+            <li>{CONSULT_PHONE}</li>
+            <li>Thông tin được cập nhật theo hồ sơ trung tâm</li>
+          </ul>
+        </div>
+      </div>
+      <div className="site-footer__bottom">
+        © {FOOTER_YEAR} Trung tâm đào tạo lái xe cơ giới đường bộ Thành Công. Mọi quyền được bảo
+        lưu.
       </div>
     </footer>
   );

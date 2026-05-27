@@ -1,3 +1,27 @@
+const overviewStats = [
+  {
+    value: "Toàn Bộ",
+    label: "Các hạng đào tạo",
+    description: "Mô tô, ô tô và nâng hạng giấy phép lái xe.",
+  },
+  {
+    value: "5000+",
+    label: "Học viên/năm",
+    description:
+      "Tuyển sinh thường xuyên, đồng hành cùng học viên trong suốt quá trình học và sát hạch.",
+  },
+  {
+    value: "Xe Tập Lái",
+    label: "Hiện Đại",
+    description: "Đáp ứng nhu cầu khai giảng liên tục, hỗ trợ học thực hành hiệu quả.",
+  },
+  {
+    value: "Đội Ngũ Giáo Viên",
+    label: "Chuyên Nghiệp",
+    description: "Bài bản, tận tâm và luôn hỗ trợ học viên trong từng giai đoạn đào tạo.",
+  },
+] as const;
+
 const overviewItems = [
   {
     title: "Thông tin chính thống",
@@ -34,7 +58,18 @@ export function CenterOverviewPage() {
         </p>
       </div>
 
-      <div className="overview-grid" aria-label="Điểm nổi bật của Trung tâm">
+      <div className="overview-stats-grid" aria-label="Năng lực đào tạo của Trung tâm">
+        {overviewStats.map((item, index) => (
+          <article className="overview-stat-card" key={item.value}>
+            <span className="overview-card__number">{String(index + 1).padStart(2, "0")}</span>
+            <h3>{item.value}</h3>
+            <p className="overview-stat-card__label">{item.label}</p>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="overview-grid overview-grid--features" aria-label="Điểm nổi bật của Trung tâm">
         {overviewItems.map((item, index) => (
           <article className="overview-card" key={item.title}>
             <span className="overview-card__number">{String(index + 1).padStart(2, "0")}</span>

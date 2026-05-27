@@ -41,6 +41,7 @@ describe("App shell", () => {
     expect(markup).toContain(SITE_AGENCY_NAME);
     expect(markup).toContain(SITE_BRAND_NAME);
     expect(markup).toContain(SITE_SLOGAN);
+    expect(markup).toContain("5000+");
     expect(markup).toContain("Đăng ký tư vấn");
     expect(appCss).toContain("Be Vietnam Pro");
   });
@@ -107,8 +108,11 @@ describe("App shell", () => {
     expect(appCss).toContain("object-fit: contain");
     expect(appCss).toContain("height: auto");
     expect(appCss).not.toContain("object-fit: " + "cover");
+    const heroStart = normalizedMarkup.indexOf("hero-banner");
+    const overviewStart = normalizedMarkup.indexOf("overview-section");
+    const heroMarkup = normalizedMarkup.slice(heroStart, overviewStart);
+    expect(heroMarkup).not.toContain("za" + "lo");
     for (const forbiddenText of [
-      "za" + "lo",
       "mascot" + "-car.png",
       "/" + "ma" + "nus-storage",
     ]) {
