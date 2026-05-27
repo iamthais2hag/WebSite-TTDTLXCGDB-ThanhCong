@@ -4,6 +4,9 @@ import bImage from "../assets/b.png";
 import cImage from "../assets/c.png";
 import c1Image from "../assets/c1.png";
 import nhImage from "../assets/nh.png";
+import { CONSULT_PHONE } from "../siteConfig";
+
+const consultPhoneHref = CONSULT_PHONE.replace(/\s/g, "");
 
 const trainingGroups = [
   {
@@ -95,6 +98,22 @@ export function EnrollmentPage() {
               </a>
             </article>
           ))}
+        </div>
+
+        <div className="enrollment-cta" aria-labelledby="enrollment-cta-title">
+          <h3 id="enrollment-cta-title">Sẵn sàng bắt đầu hành trình học lái xe?</h3>
+          <p>Liên hệ ngay để được tư vấn khóa học, hồ sơ đăng ký và lịch học phù hợp.</p>
+          <div className="enrollment-cta__actions">
+            <a className="enrollment-cta__button" href={`https://zalo.me/${consultPhoneHref}`}>
+              Nhắn Zalo
+            </a>
+            <a
+              className="enrollment-cta__button enrollment-cta__button--outline"
+              href={`tel:${consultPhoneHref}`}
+            >
+              Gọi {CONSULT_PHONE}
+            </a>
+          </div>
         </div>
       </div>
     </section>

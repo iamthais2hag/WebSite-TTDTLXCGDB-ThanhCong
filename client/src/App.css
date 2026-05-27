@@ -710,7 +710,7 @@ input {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  padding: 26px;
   border: 1px solid var(--border-soft);
   background: var(--surface);
   transition:
@@ -726,11 +726,11 @@ input {
 }
 
 .training-card__media {
-  width: calc(100% + 60px);
-  height: 224px;
+  width: calc(100% + 52px);
+  height: 210px;
   min-height: 0;
-  margin: -30px -30px 20px;
-  padding: 14px 28px 8px;
+  margin: -26px -26px 14px;
+  padding: 12px 24px 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -742,43 +742,44 @@ input {
   display: block;
   width: 100%;
   max-width: 100%;
-  max-height: 202px;
+  max-height: 192px;
   height: auto;
   object-fit: contain;
 }
 
 .training-card h3 {
-  margin: 0 0 10px;
+  margin: 0 0 7px;
   color: var(--brand-blue);
   font-size: clamp(1.34rem, 1.6vw, 1.58rem);
   font-weight: 900;
-  line-height: 1.25;
+  line-height: 1.18;
 }
 
 .training-card p {
   margin: 0;
   color: var(--text-main);
-  line-height: 1.56;
+  line-height: 1.42;
 }
 
 .training-card__summary {
-  min-height: 70px;
+  min-height: 56px;
   color: var(--text-main);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.98rem;
+  font-weight: 700;
 }
 
 .training-card__details {
   display: grid;
-  gap: 5px;
-  margin-top: 14px;
+  gap: 2px;
+  margin-top: 10px;
 }
 
 .training-card__detail {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  font-size: 0.96rem;
+  font-size: 0.94rem;
+  line-height: 1.34;
 }
 
 .training-card__detail::before {
@@ -811,7 +812,7 @@ input {
   align-items: center;
   gap: 10px;
   width: fit-content;
-  margin-top: 18px;
+  margin-top: 12px;
   color: var(--brand-blue);
   font-size: 0.98rem;
   font-weight: 900;
@@ -821,6 +822,65 @@ input {
 .training-card__link span {
   font-size: 1.35rem;
   line-height: 1;
+}
+
+.enrollment-cta {
+  margin-top: 34px;
+  padding: 36px 32px 38px;
+  border-radius: 20px;
+  color: #ffffff;
+  background: var(--brand-blue);
+  box-shadow: 0 18px 42px rgba(0, 79, 147, 0.18);
+  text-align: center;
+}
+
+.enrollment-cta h3 {
+  max-width: 980px;
+  margin: 0 auto;
+  color: #ffffff;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 900;
+  line-height: 1.12;
+}
+
+.enrollment-cta p {
+  max-width: 760px;
+  margin: 16px auto 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.enrollment-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.enrollment-cta__button {
+  min-width: 184px;
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 26px;
+  border: 1px solid #ffffff;
+  border-radius: 999px;
+  color: var(--brand-blue);
+  background: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
+}
+
+.enrollment-cta__button--outline {
+  color: #ffffff;
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.38);
+  box-shadow: none;
 }
 
 .site-footer {
@@ -833,7 +893,7 @@ input {
   display: grid;
   grid-template-columns: minmax(0, 1.45fr) minmax(220px, 0.6fr) minmax(300px, 0.75fr);
   gap: 64px;
-  padding: 60px 0 48px;
+  padding: 42px 0 34px;
 }
 
 .site-footer__brand {
@@ -874,11 +934,11 @@ input {
 
 .site-footer__copy {
   max-width: 720px;
-  margin: 32px 0 0;
+  margin: 22px 0 0;
   color: rgba(255, 255, 255, 0.86);
   font-size: 1rem;
   font-weight: 500;
-  line-height: 1.9;
+  line-height: 1.7;
 }
 
 .site-footer__slogan {
@@ -893,7 +953,7 @@ input {
 }
 
 .site-footer__heading {
-  margin: 0 0 22px;
+  margin: 0 0 16px;
   color: #ffffff;
   font-size: 1.1rem;
   font-weight: 800;
@@ -902,7 +962,7 @@ input {
 
 .site-footer__list {
   display: grid;
-  gap: 16px;
+  gap: 11px;
   padding: 0;
   margin: 0;
   color: rgba(255, 255, 255, 0.82);
@@ -918,7 +978,7 @@ input {
 
 .site-footer__bottom {
   width: 100%;
-  padding: 22px 24px 24px;
+  padding: 16px 24px 18px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.72);
   font-size: 0.9rem;
@@ -1633,15 +1693,15 @@ input {
 }
 
 .training-card {
-  padding: 28px;
+  padding: 26px;
 }
 
 .training-card__media {
-  width: calc(100% + 56px);
-  height: 220px;
+  width: calc(100% + 52px);
+  height: 210px;
   min-height: 0;
-  margin: -28px -28px 18px;
-  padding: 14px 26px 8px;
+  margin: -26px -26px 14px;
+  padding: 12px 24px 6px;
   border-radius: 16px 16px 0 0;
   background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
 }
@@ -1652,11 +1712,11 @@ input {
 }
 
 .training-card p {
-  line-height: 1.52;
+  line-height: 1.42;
 }
 
 .training-card__summary {
-  min-height: 64px;
+  min-height: 56px;
 }
 
 @media (min-width: 1180px) {

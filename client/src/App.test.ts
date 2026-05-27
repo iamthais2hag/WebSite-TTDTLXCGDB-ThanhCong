@@ -78,6 +78,9 @@ describe("App shell", () => {
     expect(markup).toContain("Học đến thi:");
     expect(markup).not.toContain("training-card__badge");
     expect(markup).not.toContain("training-card__group-name");
+    expect(markup).toContain("Sẵn sàng bắt đầu hành trình học lái xe?");
+    expect(markup).toContain("Nhắn Zalo");
+    expect(markup).toContain("Gọi 0926 236 239");
   });
 
   it("renders the old-site hero visual content and official car video proportionally", () => {
