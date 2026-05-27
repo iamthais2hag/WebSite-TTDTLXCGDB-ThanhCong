@@ -1373,52 +1373,52 @@ input {
 @media (min-width: 1500px) {
   .site-header__inner {
     width: min(1784px, calc(100% - 264px));
-    height: 118px;
-    min-height: 118px;
-    gap: 28px;
+    height: 116px;
+    min-height: 116px;
+    gap: 24px;
   }
 
   .site-brand {
-    flex: 1 1 560px;
-    max-width: 560px;
-    gap: 22px;
+    flex: 1 1 520px;
+    max-width: 520px;
+    gap: 20px;
   }
 
   .site-brand__logo {
-    width: 76px;
+    width: 72px;
   }
 
   .site-brand__agency {
     overflow: visible;
-    font-size: 1.18rem;
+    font-size: 1.04rem;
     line-height: 1.08;
     text-overflow: clip;
   }
 
   .site-brand strong {
-    margin-top: 6px;
-    font-size: 2rem;
+    margin-top: 5px;
+    font-size: 1.72rem;
   }
 
   .site-brand__tagline {
     margin-top: 6px;
-    font-size: 1.05rem;
+    font-size: 0.9rem;
   }
 
   .site-nav__list {
-    gap: 18px;
+    gap: 16px;
   }
 
   .site-nav__link {
-    padding: 13px 22px;
-    font-size: 1.18rem;
+    padding: 12px 20px;
+    font-size: 1.04rem;
     line-height: 1.25;
   }
 
   .header-consult-button {
-    min-height: 58px;
-    padding: 14px 30px;
-    font-size: 1.1rem;
+    min-height: 56px;
+    padding: 13px 28px;
+    font-size: 1rem;
   }
 
   .hero-banner {
