@@ -50,7 +50,7 @@ describe("App shell", () => {
     const markup = renderToStaticMarkup(createElement(App));
     const homeIndex = markup.indexOf("Học lái xe bài bản,");
     const overviewIndex = markup.indexOf("Giới thiệu trung tâm");
-    const enrollmentIndex = markup.indexOf("Các nhóm đào tạo");
+    const enrollmentIndex = markup.indexOf("Danh sách hạng đào tạo");
     const lookupIndex = markup.indexOf("Khu vực tra cứu thông tin đăng ký học");
     const announcementsIndex = markup.indexOf("Thông báo mới");
     const legalIndex = markup.indexOf("Văn bản và hướng dẫn liên quan");
@@ -61,6 +61,9 @@ describe("App shell", () => {
     expect(announcementsIndex).toBeGreaterThan(lookupIndex);
     expect(legalIndex).toBeGreaterThan(announcementsIndex);
     expect(enrollmentIndex).toBeGreaterThan(legalIndex);
+    expect(markup).toContain("Các hạng đào tạo");
+    expect(markup).toContain("Trung tâm đào tạo đầy đủ các hạng giấy phép lái xe");
+    expect(markup).not.toContain("Thông tin tuyển sinh được đặt" + " sau");
   });
 
   it("renders all approved enrollment groups", () => {

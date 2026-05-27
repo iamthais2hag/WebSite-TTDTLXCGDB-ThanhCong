@@ -8,70 +8,101 @@ import nhImage from "../assets/nh.png";
 const trainingGroups = [
   {
     image: a1Image,
+    badge: "Hạng A1",
     name: "A1",
-    summary: "Đào tạo mô tô hạng A1 theo chương trình được công bố.",
-    meta: "Mô tô",
+    title: "Mô tô hạng A1",
+    summary:
+      "Đào tạo lái xe mô tô hai bánh dung tích đến 125cc hoặc xe điện có công suất theo quy định hiện hành.",
+    duration: "1-2 tháng",
   },
   {
     image: amImage,
+    badge: "Hạng A/AM",
     name: "A/AM",
-    summary: "Nhóm đào tạo mô tô A/AM theo dữ liệu đã xác nhận.",
-    meta: "Mô tô",
+    title: "Mô tô hạng A/AM",
+    summary: "Đào tạo nhóm mô tô A/AM theo chương trình và phạm vi hạng đã được công bố.",
+    duration: "1-2 tháng",
   },
   {
     image: bImage,
+    badge: "Hạng B",
     name: "B số sàn/số cơ khí/số tự động",
-    summary: "Đào tạo ô tô hạng B với các nhu cầu sử dụng xe phổ biến.",
-    meta: "Ô tô",
+    title: "Ô tô hạng B",
+    summary:
+      "Đào tạo hạng B số sàn, số cơ khí và số tự động, phù hợp nhu cầu sử dụng xe phổ biến.",
+    duration: "3-5 tháng",
   },
   {
     image: c1Image,
+    badge: "Hạng C1",
     name: "C1",
-    summary: "Đào tạo ô tô tải hạng C1 theo quy định hiện hành.",
-    meta: "Ô tô tải",
+    title: "Ô tô tải hạng C1",
+    summary:
+      "Đào tạo lái xe ô tô tải theo phạm vi hạng C1, phù hợp học viên có nhu cầu vận tải.",
+    duration: "5-6 tháng",
   },
   {
     image: cImage,
+    badge: "Hạng C",
     name: "C",
-    summary: "Đào tạo ô tô tải hạng C cho nhu cầu vận tải chuyên nghiệp.",
-    meta: "Ô tô tải",
+    title: "Ô tô tải hạng C",
+    summary: "Đào tạo ô tô tải hạng C cho học viên cần nâng cao kỹ năng vận tải chuyên nghiệp.",
+    duration: "5-6 tháng",
   },
   {
     image: nhImage,
+    badge: "Hạng nâng hạng",
     name: "Nâng hạng",
-    summary: "Tư vấn và đào tạo nâng hạng theo điều kiện từng hồ sơ.",
-    meta: "GPLX",
+    title: "Nâng hạng giấy phép lái xe",
+    summary: "Tư vấn và đào tạo nâng hạng GPLX theo nhu cầu thực tế của học viên và quy định hiện hành.",
+    duration: "Theo hạng nâng",
   },
 ] as const;
 
 export function EnrollmentPage() {
   return (
-    <section className="page-section page-section--band enrollment-section" id="tuyen-sinh" aria-labelledby="enrollment-title">
+    <section
+      className="page-section page-section--band enrollment-section"
+      id="tuyen-sinh"
+      aria-labelledby="enrollment-title"
+    >
       <div className="section-hero">
         <div className="section-hero__inner">
-          <p className="section-eyebrow">Tuyển sinh</p>
-          <h2 id="enrollment-title">Các nhóm đào tạo</h2>
+          <h2 id="enrollment-title">Các hạng đào tạo</h2>
           <p>
-            Thông tin tuyển sinh được đặt sau các phần thông tin chính thống của
-            Trung tâm, dùng đúng bộ ảnh xe chính thức đã được xác nhận.
+            Trung tâm đào tạo đầy đủ các hạng giấy phép lái xe theo quy định, hỗ trợ tư vấn lộ
+            trình học phù hợp với từng học viên.
           </p>
         </div>
       </div>
 
       <div className="section-body">
-        <div className="training-grid" aria-label="Danh sách nhóm đào tạo">
+        <div className="training-grid" aria-label="Danh sách hạng đào tạo">
           {trainingGroups.map((group) => (
             <article className="training-card" key={group.name}>
-              <div className="training-card__media">
-                <img src={group.image} alt="" />
+              <div className="training-card__top">
+                <div className="training-card__media">
+                  <img src={group.image} alt="" />
+                </div>
+                <span className="training-card__badge">{group.badge}</span>
               </div>
-              <span className="training-card__badge">Hạng {group.name}</span>
-              <h3>{group.name}</h3>
-              <p>{group.summary}</p>
-              <div className="training-card__meta">
-                <span>Nhóm</span>
-                <strong>{group.meta}</strong>
+              <p className="training-card__group-name">{group.name}</p>
+              <h3>{group.title}</h3>
+              <p className="training-card__summary">{group.summary}</p>
+              <div className="training-card__details" aria-label={`Thông tin ${group.name}`}>
+                <p className="training-card__detail training-card__detail--time">
+                  <span>Thời gian:</span>
+                  <strong>{group.duration}</strong>
+                </p>
+                <p className="training-card__detail training-card__detail--fee">
+                  <span>Học phí:</span>
+                  <strong>Liên hệ</strong>
+                </p>
               </div>
+              <a className="training-card__link" href="#tuyen-sinh">
+                Bấm để xem chi tiết
+                <span aria-hidden="true">›</span>
+              </a>
             </article>
           ))}
         </div>
