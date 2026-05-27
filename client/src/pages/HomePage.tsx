@@ -52,8 +52,8 @@ export function HomePage() {
           <a className="button-link button-link--primary" href="#tuyen-sinh">
             Xem khóa học
           </a>
-          <a className="button-link button-link--call" href="tel:0926236239">
-            Gọi 0926 236 239
+          <a className="button-link button-link--accent" href="#tuyen-sinh">
+            Đăng ký tư vấn
           </a>
         </div>
       </div>

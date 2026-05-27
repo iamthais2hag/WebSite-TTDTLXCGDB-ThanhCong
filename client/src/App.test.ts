@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { App } from "./App";
-import { APP_NAV_ITEMS } from "./siteConfig";
+import { APP_NAV_ITEMS, SITE_AGENCY_NAME, SITE_BRAND_NAME, SITE_SLOGAN } from "./siteConfig";
 
 const appCss = readFileSync(
   fileURLToPath(new URL("./App.css", import.meta.url)),
@@ -15,13 +15,14 @@ describe("App shell", () => {
   it("keeps the expected public navigation order", () => {
     expect(APP_NAV_ITEMS.map((item) => item.label)).toEqual([
       "Trang chủ",
-      "Tuyển sinh",
       "Tra cứu",
       "Thông báo",
       "Pháp lý",
+      "Tuyển sinh",
     ]);
     expect(APP_NAV_ITEMS[0]?.label).toBe("Trang chủ");
-    expect(APP_NAV_ITEMS[1]?.label).toBe("Tuyển sinh");
+    expect(APP_NAV_ITEMS[0]?.label).not.toBe("Tuyển sinh");
+    expect(APP_NAV_ITEMS.at(-1)?.label).toBe("Tuyển sinh");
   });
 
   it("renders layout, header, navigation, and footer", () => {
@@ -33,29 +34,32 @@ describe("App shell", () => {
     expect(markup).toContain("Điều hướng chính");
     expect(markup).toContain("site-footer");
     expect(markup).toContain("Trang chủ");
-    expect(markup).toContain("Tuyển sinh");
     expect(markup).toContain("Tra cứu");
     expect(markup).toContain("Thông báo");
     expect(markup).toContain("Pháp lý");
-    expect(markup).toContain("TRUNG TÂM ĐÀO TẠO LÁI XE CƠ GIỚI ĐƯỜNG BỘ");
-    expect(markup).toContain("THÀNH CÔNG");
-    expect(markup).toContain("Vững tay lái – Vững bước thành công");
+    expect(markup).toContain("Tuyển sinh");
+    expect(markup).toContain(SITE_AGENCY_NAME);
+    expect(markup).toContain(SITE_BRAND_NAME);
+    expect(markup).toContain(SITE_SLOGAN);
     expect(markup).toContain("Đăng ký tư vấn");
+    expect(appCss).toContain("Be Vietnam Pro");
   });
 
-  it("renders the basic public pages in the old-site order", () => {
+  it("renders the basic public pages with enrollment after official sections", () => {
     const markup = renderToStaticMarkup(createElement(App));
     const homeIndex = markup.indexOf("Học lái xe bài bản,");
+    const overviewIndex = markup.indexOf("Giới thiệu trung tâm");
     const enrollmentIndex = markup.indexOf("Các nhóm đào tạo");
     const lookupIndex = markup.indexOf("Khu vực tra cứu thông tin đăng ký học");
     const announcementsIndex = markup.indexOf("Thông báo mới");
     const legalIndex = markup.indexOf("Văn bản và hướng dẫn liên quan");
 
     expect(homeIndex).toBeGreaterThanOrEqual(0);
-    expect(enrollmentIndex).toBeGreaterThan(homeIndex);
-    expect(lookupIndex).toBeGreaterThan(enrollmentIndex);
+    expect(overviewIndex).toBeGreaterThan(homeIndex);
+    expect(lookupIndex).toBeGreaterThan(overviewIndex);
     expect(announcementsIndex).toBeGreaterThan(lookupIndex);
     expect(legalIndex).toBeGreaterThan(announcementsIndex);
+    expect(enrollmentIndex).toBeGreaterThan(legalIndex);
   });
 
   it("renders all approved enrollment groups", () => {
@@ -79,7 +83,7 @@ describe("App shell", () => {
     expect(markup).toContain("Học lái xe bài bản,");
     expect(markup).toContain("sát hạch đúng chuẩn");
     expect(markup).toContain("Xem khóa học");
-    expect(markup).toContain("Gọi 0926 236 239");
+    expect(markup).toContain("Đăng ký tư vấn");
     expect(markup).toContain("Khai giảng liên tục");
     expect(markup).toContain("Tư vấn rõ ràng");
     expect(markup).toContain("Học thực hành bài bản");
@@ -101,7 +105,12 @@ describe("App shell", () => {
     expect(normalizedMarkup).toContain("car.mp4");
     expect(appCss).toContain("object-fit: contain");
     expect(appCss).toContain("height: auto");
-    for (const forbiddenText of ["za" + "lo"]) {
+    expect(appCss).not.toContain("object-fit: " + "cover");
+    for (const forbiddenText of [
+      "za" + "lo",
+      "mascot" + "-car.png",
+      "/" + "ma" + "nus-storage",
+    ]) {
       expect(normalizedMarkup).not.toContain(forbiddenText);
     }
   });

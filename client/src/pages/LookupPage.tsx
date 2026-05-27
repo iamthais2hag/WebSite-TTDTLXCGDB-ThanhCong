@@ -171,53 +171,57 @@ export function LookupPage({ searchStudent = defaultSearchStudent }: LookupPageP
   }
 
   return (
-    <section className="page-section" id="tra-cuu" aria-labelledby="lookup-title">
-      <div className="section-heading">
-        <p className="section-eyebrow">Tra cứu học viên</p>
-        <h2 id="lookup-title">Khu vực tra cứu thông tin đăng ký học</h2>
-        <p>
-          Nhập CCCD và chọn loại đào tạo để tra cứu thông tin đăng ký học.
-          Kết quả chỉ hiển thị CCCD đã che từ hệ thống.
-        </p>
+    <section className="page-section page-section--band" id="tra-cuu" aria-labelledby="lookup-title">
+      <div className="section-hero">
+        <div className="section-hero__inner">
+          <p className="section-eyebrow">Tra cứu học viên</p>
+          <h2 id="lookup-title">Khu vực tra cứu thông tin đăng ký học</h2>
+          <p>
+            Nhập CCCD và chọn loại đào tạo để tra cứu thông tin đăng ký học.
+            Kết quả chỉ hiển thị CCCD đã che từ hệ thống.
+          </p>
+        </div>
       </div>
 
-      <form className="lookup-form" onSubmit={(event) => event.preventDefault()}>
-        <div className="lookup-field">
-          <label htmlFor="lookup-so-cmt">CCCD</label>
-          <input
-            autoComplete="off"
-            id="lookup-so-cmt"
-            inputMode="numeric"
-            maxLength={12}
-            onChange={(event) => setSoCMT(sanitizeSoCMT(event.target.value))}
-            pattern="[0-9]*"
-            placeholder="Nhập 9-12 chữ số"
-            type="text"
-            value={soCMT}
-          />
-        </div>
+      <div className="section-body">
+        <form className="lookup-form" onSubmit={(event) => event.preventDefault()}>
+          <div className="lookup-field">
+            <label htmlFor="lookup-so-cmt">CCCD</label>
+            <input
+              autoComplete="off"
+              id="lookup-so-cmt"
+              inputMode="numeric"
+              maxLength={12}
+              onChange={(event) => setSoCMT(sanitizeSoCMT(event.target.value))}
+              pattern="[0-9]*"
+              placeholder="Nhập 9-12 chữ số"
+              type="text"
+              value={soCMT}
+            />
+          </div>
 
-        <div className="lookup-actions" aria-label="Chọn loại đào tạo để tra cứu">
-          <button
-            className="button-link button-link--primary"
-            disabled={lookupState.status === "loading"}
-            onClick={() => void handleSearch("moto")}
-            type="button"
-          >
-            Tra cứu Mô tô
-          </button>
-          <button
-            className="button-link"
-            disabled={lookupState.status === "loading"}
-            onClick={() => void handleSearch("oto")}
-            type="button"
-          >
-            Tra cứu Ô tô
-          </button>
-        </div>
-      </form>
+          <div className="lookup-actions" aria-label="Chọn loại đào tạo để tra cứu">
+            <button
+              className="button-link button-link--primary"
+              disabled={lookupState.status === "loading"}
+              onClick={() => void handleSearch("moto")}
+              type="button"
+            >
+              Tra cứu Mô tô
+            </button>
+            <button
+              className="button-link"
+              disabled={lookupState.status === "loading"}
+              onClick={() => void handleSearch("oto")}
+              type="button"
+            >
+              Tra cứu Ô tô
+            </button>
+          </div>
+        </form>
 
-      <LookupResultList state={lookupState} />
+        <LookupResultList state={lookupState} />
+      </div>
     </section>
   );
 }

@@ -1,6 +1,7 @@
 import "./App.css";
 import { Layout } from "./components/layout/Layout";
 import { AnnouncementsPage } from "./pages/AnnouncementsPage";
+import { CenterOverviewPage } from "./pages/CenterOverviewPage";
 import { EnrollmentPage } from "./pages/EnrollmentPage";
 import { HomePage } from "./pages/HomePage";
 import { LegalPage } from "./pages/LegalPage";
@@ -10,10 +11,11 @@ export function App() {
   return (
     <Layout>
       <HomePage />
-      <EnrollmentPage />
+      <CenterOverviewPage />
       <LookupPage />
       <AnnouncementsPage />
       <LegalPage />
+      <EnrollmentPage />
     </Layout>
   );
 }
