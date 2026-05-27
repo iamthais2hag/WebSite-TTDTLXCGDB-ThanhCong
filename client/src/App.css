@@ -727,17 +727,18 @@ input {
 
 .training-card__top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 18px;
+  margin-bottom: 22px;
 }
 
 .training-card__media {
-  width: 88px;
-  height: 64px;
+  width: min(58%, 240px);
+  height: 142px;
   min-height: 0;
   margin: 0;
+  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -748,9 +749,9 @@ input {
 
 .training-card__media img {
   display: block;
-  width: min(100%, 78px);
+  width: 100%;
   max-width: 100%;
-  max-height: 54px;
+  max-height: 118px;
   height: auto;
   object-fit: contain;
 }
@@ -1665,10 +1666,11 @@ input {
 }
 
 .training-card__media {
-  width: 88px;
-  height: 64px;
+  width: min(58%, 240px);
+  height: 142px;
   min-height: 0;
   margin: 0;
+  padding: 12px;
   border-radius: 16px;
   background: #eaf3ff;
 }
