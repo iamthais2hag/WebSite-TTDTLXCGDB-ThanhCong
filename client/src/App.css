@@ -1373,8 +1373,8 @@ input {
 @media (min-width: 1500px) {
   .site-header__inner {
     width: min(1784px, calc(100% - 264px));
-    height: 116px;
-    min-height: 116px;
+    height: 96px;
+    min-height: 96px;
     gap: 24px;
   }
 
@@ -1385,40 +1385,43 @@ input {
   }
 
   .site-brand__logo {
-    width: 72px;
+    width: 64px;
   }
 
   .site-brand__agency {
     overflow: visible;
-    font-size: 1.04rem;
-    line-height: 1.08;
+    font-size: 1rem;
+    line-height: 1.25;
     text-overflow: clip;
   }
 
   .site-brand strong {
-    margin-top: 5px;
-    font-size: 1.72rem;
-  }
-
-  .site-brand__tagline {
-    margin-top: 6px;
-    font-size: 0.9rem;
-  }
-
-  .site-nav__list {
-    gap: 16px;
-  }
-
-  .site-nav__link {
-    padding: 12px 20px;
-    font-size: 1.04rem;
+    margin-top: 4px;
+    font-size: 1.5rem;
     line-height: 1.25;
   }
 
+  .site-brand__tagline {
+    margin-top: 4px;
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+
+  .site-nav__list {
+    gap: 8px;
+  }
+
+  .site-nav__link {
+    padding: 10px 16px;
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+
   .header-consult-button {
-    min-height: 56px;
-    padding: 13px 28px;
+    min-height: 48px;
+    padding: 12px 24px;
     font-size: 1rem;
+    font-weight: 700;
   }
 
   .hero-banner {
