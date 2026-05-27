@@ -73,8 +73,11 @@ describe("App shell", () => {
     expect(markup).toContain("A/AM");
     expect(markup).toContain("B số sàn/số cơ khí/số tự động");
     expect(markup).toContain("C1");
-    expect(markup).toContain(">C<");
-    expect(markup).toContain("Nâng hạng");
+    expect(markup).toContain("Ô tô tải hạng C");
+    expect(markup).toContain("Nâng hạng giấy phép lái xe");
+    expect(markup).toContain("Học đến thi:");
+    expect(markup).not.toContain("training-card__badge");
+    expect(markup).not.toContain("training-card__group-name");
   });
 
   it("renders the old-site hero visual content and official car video proportionally", () => {

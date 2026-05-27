@@ -725,62 +725,31 @@ input {
   transform: translateY(-2px);
 }
 
-.training-card__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 22px;
-}
-
 .training-card__media {
-  width: min(58%, 240px);
-  height: 142px;
+  width: calc(100% + 60px);
+  height: 238px;
   min-height: 0;
-  margin: 0;
-  padding: 12px;
+  margin: -30px -30px 26px;
+  padding: 18px 28px 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
-  border-radius: 14px;
-  background: #eaf3ff;
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
 }
 
 .training-card__media img {
   display: block;
   width: 100%;
   max-width: 100%;
-  max-height: 118px;
+  max-height: 210px;
   height: auto;
   object-fit: contain;
 }
 
-.training-card__badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  margin: 0;
-  padding: 5px 12px;
-  border-radius: 999px;
-  color: var(--brand-red);
-  background: #fff1f1;
-  font-size: 0.82rem;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.training-card__group-name {
-  margin: 0 0 12px;
-  color: var(--brand-blue);
-  font-size: 0.92rem;
-  font-weight: 800;
-  line-height: 1.3;
-}
-
 .training-card h3 {
   margin: 0 0 14px;
-  color: #020b1c;
+  color: var(--brand-blue);
   font-size: clamp(1.34rem, 1.6vw, 1.58rem);
   font-weight: 900;
   line-height: 1.25;
@@ -794,6 +763,7 @@ input {
 
 .training-card__summary {
   min-height: 86px;
+  color: var(--text-main);
   font-size: 1rem;
 }
 
@@ -1666,13 +1636,13 @@ input {
 }
 
 .training-card__media {
-  width: min(58%, 240px);
-  height: 142px;
+  width: calc(100% + 56px);
+  height: 230px;
   min-height: 0;
-  margin: 0;
-  padding: 12px;
-  border-radius: 16px;
-  background: #eaf3ff;
+  margin: -28px -28px 24px;
+  padding: 18px 26px 12px;
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
 }
 
 .training-card h3 {

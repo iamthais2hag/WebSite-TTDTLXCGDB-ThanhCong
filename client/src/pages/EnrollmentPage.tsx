@@ -8,7 +8,6 @@ import nhImage from "../assets/nh.png";
 const trainingGroups = [
   {
     image: a1Image,
-    badge: "Hạng A1",
     name: "A1",
     title: "Mô tô hạng A1",
     summary:
@@ -17,7 +16,6 @@ const trainingGroups = [
   },
   {
     image: amImage,
-    badge: "Hạng A/AM",
     name: "A/AM",
     title: "Mô tô hạng A/AM",
     summary: "Đào tạo nhóm mô tô A/AM theo chương trình và phạm vi hạng đã được công bố.",
@@ -25,7 +23,6 @@ const trainingGroups = [
   },
   {
     image: bImage,
-    badge: "Hạng B",
     name: "B số sàn/số cơ khí/số tự động",
     title: "Ô tô hạng B",
     summary:
@@ -34,7 +31,6 @@ const trainingGroups = [
   },
   {
     image: c1Image,
-    badge: "Hạng C1",
     name: "C1",
     title: "Ô tô tải hạng C1",
     summary:
@@ -43,7 +39,6 @@ const trainingGroups = [
   },
   {
     image: cImage,
-    badge: "Hạng C",
     name: "C",
     title: "Ô tô tải hạng C",
     summary: "Đào tạo ô tô tải hạng C cho học viên cần nâng cao kỹ năng vận tải chuyên nghiệp.",
@@ -51,7 +46,6 @@ const trainingGroups = [
   },
   {
     image: nhImage,
-    badge: "Hạng nâng hạng",
     name: "Nâng hạng",
     title: "Nâng hạng giấy phép lái xe",
     summary: "Tư vấn và đào tạo nâng hạng GPLX theo nhu cầu thực tế của học viên và quy định hiện hành.",
@@ -80,18 +74,14 @@ export function EnrollmentPage() {
         <div className="training-grid" aria-label="Danh sách hạng đào tạo">
           {trainingGroups.map((group) => (
             <article className="training-card" key={group.name}>
-              <div className="training-card__top">
-                <div className="training-card__media">
-                  <img src={group.image} alt="" />
-                </div>
-                <span className="training-card__badge">{group.badge}</span>
+              <div className="training-card__media">
+                <img src={group.image} alt="" />
               </div>
-              <p className="training-card__group-name">{group.name}</p>
               <h3>{group.title}</h3>
               <p className="training-card__summary">{group.summary}</p>
               <div className="training-card__details" aria-label={`Thông tin ${group.name}`}>
                 <p className="training-card__detail training-card__detail--time">
-                  <span>Thời gian:</span>
+                  <span>Học đến thi:</span>
                   <strong>{group.duration}</strong>
                 </p>
                 <p className="training-card__detail training-card__detail--fee">
