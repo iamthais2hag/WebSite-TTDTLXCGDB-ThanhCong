@@ -9,6 +9,7 @@
     "build": "pnpm --filter shared build && pnpm --filter client build && pnpm --filter server build && pnpm --filter sync-tool build",
     "check": "pnpm -r check",
     "test": "pnpm -r test",
+    "verify": "pnpm check && pnpm test && pnpm build",
     "lint": "pnpm -r lint"
   }
 }
