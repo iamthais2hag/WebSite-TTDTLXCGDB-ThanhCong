@@ -866,6 +866,7 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   padding: 14px 26px;
   border: 1px solid #ffffff;
   border-radius: 999px;
@@ -874,6 +875,18 @@ input {
   font-size: 1rem;
   font-weight: 900;
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
+}
+
+.enrollment-cta__button span {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.enrollment-cta__button--detail {
+  min-width: 252px;
+  color: #ffffff;
+  background: var(--brand-blue-deep);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .enrollment-cta__button--outline {

@@ -104,14 +104,21 @@ export function EnrollmentPage() {
           <h3 id="enrollment-cta-title">Sẵn sàng bắt đầu hành trình học lái xe?</h3>
           <p>Liên hệ ngay để được tư vấn khóa học, hồ sơ đăng ký và lịch học phù hợp.</p>
           <div className="enrollment-cta__actions">
+            <a
+              className="enrollment-cta__button enrollment-cta__button--detail"
+              href="#tuyen-sinh"
+            >
+              Xem chi tiết tuyển sinh
+              <span aria-hidden="true">›</span>
+            </a>
             <a className="enrollment-cta__button" href={`https://zalo.me/${consultPhoneHref}`}>
-              Nhắn Zalo
+              Liên hệ qua Zalo
             </a>
             <a
               className="enrollment-cta__button enrollment-cta__button--outline"
               href={`tel:${consultPhoneHref}`}
             >
-              Gọi {CONSULT_PHONE}
+              Gọi điện tư vấn
             </a>
           </div>
         </div>
