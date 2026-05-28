@@ -76,6 +76,8 @@ describe("App shell", () => {
     expect(markup).toContain("C1");
     expect(markup).toContain("Ô tô tải hạng C");
     expect(markup).toContain("Nâng hạng giấy phép lái xe");
+    expect(markup).toContain('aria-haspopup="dialog"');
+    expect(markup).toContain('data-course-code="A1"');
     expect(markup).toContain("Học đến thi:");
     expect(markup).not.toContain("training-card__badge");
     expect(markup).not.toContain("training-card__group-name");
@@ -84,6 +86,11 @@ describe("App shell", () => {
     expect(markup).toContain("href=\"#tuyen-sinh\"");
     expect(markup).toContain("Liên hệ qua Zalo");
     expect(markup).toContain("Gọi điện tư vấn");
+    expect(markup).not.toContain('role="dialog"');
+    expect(markup).not.toContain("A2");
+    expect(markup).not.toContain(">D<");
+    expect(markup).not.toContain(">E<");
+    expect(markup).not.toContain(">F<");
   });
 
   it("renders the old-site hero visual content and official car video proportionally", () => {
