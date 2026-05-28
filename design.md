@@ -1478,6 +1478,9 @@ Mỗi task/code chỉ hoàn thành khi:
 - [ ] `pnpm check` pass
 - [ ] `pnpm test` pass
 - [ ] `pnpm build` pass
+- [ ] `pnpm --filter server check/test/build` pass
+- [ ] `pnpm --filter sync-tool check/test/build` pass
+- [ ] `pnpm --filter client check/test/build` pass
 - [ ] `cd sync-tool && pnpm build && pnpm test` pass (nếu có)
 
 ### Security
@@ -1491,10 +1494,14 @@ Mỗi task/code chỉ hoàn thành khi:
 - [ ] Không có file cấm trong git status
 - [ ] Không có ảnh học viên runtime trong git
 - [ ] Không có .env trong git
+- [ ] Không có `sync-tool/last-sync.json` trong git
+- [ ] Không có `node_modules`, `dist`, `build`, logs trong git
+- [ ] Không có dấu vết công cụ/template cũ trong source public
+- [ ] Không có asset cũ sai tên trong `client/src`
 
 ### UI
 - [ ] Không thay đổi UI ngoài phạm vi được xác nhận
-- [ ] Không có hotline/Zalo OA ở phần đầu trang
+- [ ] Hotline chỉ dùng số đã xác nhận; không hiển thị Zalo OA ở hero/top nếu chưa xác nhận riêng
 - [ ] Không có ảnh bị méo do CSS sai tỷ lệ
 - [ ] Ảnh học viên dùng `object-fit: contain`
 
