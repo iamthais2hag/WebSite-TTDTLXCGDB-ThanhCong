@@ -1495,20 +1495,21 @@ input {
 .overview-section {
   width: 100%;
   max-width: none;
-  padding: 44px max(32px, calc((100vw - 1536px) / 2 + 32px));
+  padding: 40px max(32px, calc((100vw - 1536px) / 2 + 32px));
   background: var(--surface);
 }
 
 .overview-section .section-heading {
-  position: static;
-  width: min(1280px, 100%);
-  height: auto;
+  position: absolute;
+  width: 1px;
+  height: 1px;
   padding: 0;
-  margin: 0 auto 28px;
-  overflow: visible;
-  clip-path: none;
-  text-align: center;
-  white-space: normal;
+  margin: -1px;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .overview-section .section-heading h2 {
@@ -1535,7 +1536,7 @@ input {
 .overview-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .overview-card,
@@ -1559,7 +1560,7 @@ input {
 }
 
 .overview-stat-card {
-  min-height: 220px;
+  min-height: 232px;
   padding: 24px;
   border: 1px solid var(--border-soft);
   background: var(--surface);
@@ -1585,6 +1586,28 @@ input {
   background: #eaf3ff;
 }
 
+.overview-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  color: var(--brand-blue);
+  background: #eaf3ff;
+}
+
+.overview-card__icon svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .overview-card h3 {
   margin-bottom: 8px;
   color: var(--brand-blue);
@@ -1596,7 +1619,7 @@ input {
 .overview-stat-card h3 {
   margin: 0 0 4px;
   color: var(--brand-blue);
-  font-size: clamp(1.45rem, 1.85vw, 1.95rem);
+  font-size: clamp(1.5rem, 1.85vw, 1.95rem);
   font-weight: 900;
   line-height: 1.15;
 }
@@ -1612,8 +1635,8 @@ input {
 .overview-card p,
 .overview-stat-card p {
   color: var(--text-muted);
-  font-size: 0.95rem;
-  line-height: 1.75;
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .page-section--band {

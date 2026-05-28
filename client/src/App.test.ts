@@ -15,14 +15,14 @@ describe("App shell", () => {
   it("keeps the expected public navigation order", () => {
     expect(APP_NAV_ITEMS.map((item) => item.label)).toEqual([
       "Trang chủ",
+      "Tuyển sinh",
       "Tra cứu",
       "Thông báo",
       "Pháp lý",
-      "Tuyển sinh",
     ]);
     expect(APP_NAV_ITEMS[0]?.label).toBe("Trang chủ");
     expect(APP_NAV_ITEMS[0]?.label).not.toBe("Tuyển sinh");
-    expect(APP_NAV_ITEMS.at(-1)?.label).toBe("Tuyển sinh");
+    expect(APP_NAV_ITEMS[1]?.label).toBe("Tuyển sinh");
   });
 
   it("renders layout, header, navigation, and footer", () => {
@@ -42,6 +42,7 @@ describe("App shell", () => {
     expect(markup).toContain(SITE_BRAND_NAME);
     expect(markup).toContain(SITE_SLOGAN);
     expect(markup).toContain("5000+");
+    expect(markup).toContain("overview-card__icon");
     expect(markup).toContain("Đăng ký tư vấn");
     expect(appCss).toContain("Be Vietnam Pro");
   });
