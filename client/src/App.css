@@ -1039,6 +1039,108 @@ input {
   padding: 0 24px 24px;
 }
 
+.floating-contact {
+  position: fixed;
+  top: 58%;
+  right: 18px;
+  z-index: 35;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  transform: translateY(-50%);
+}
+
+.baby-car {
+  width: 88px;
+  padding: 8px 8px 6px;
+  border: 1px solid var(--border-soft);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 70% 0%, #fff4cf 0, transparent 42%),
+    linear-gradient(180deg, #ffffff 0%, #edf4ff 100%);
+  box-shadow: 0 14px 32px rgba(0, 79, 147, 0.18);
+}
+
+.baby-car__svg {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  animation: baby-car-idle 2.4s ease-in-out infinite;
+}
+
+.baby-car__pupil {
+  transition: 90ms ease-out;
+}
+
+.floating-contact__button {
+  width: 62px;
+  min-height: 62px;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  padding: 7px 6px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(0, 79, 147, 0.18);
+  text-align: center;
+}
+
+.floating-contact__button span {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.floating-contact__button strong {
+  color: var(--text-main);
+  font-size: 0.62rem;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.floating-contact__button--zalo span {
+  color: #ffffff;
+  background: var(--brand-blue);
+}
+
+.floating-contact__button--phone {
+  background: var(--brand-gold);
+  border-color: #f4bd31;
+}
+
+.floating-contact__button--phone span {
+  color: var(--brand-blue-deep);
+  background: #ffffff;
+}
+
+@keyframes baby-car-idle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .baby-car__svg,
+  .baby-car__pupil {
+    animation: none;
+    transition: none;
+  }
+}
+
 .course-modal__button {
   min-height: 48px;
   display: inline-flex;
@@ -2216,5 +2318,35 @@ input {
 
   .course-modal__button {
     width: 100%;
+  }
+
+  .floating-contact {
+    top: auto;
+    right: 12px;
+    bottom: 14px;
+    gap: 8px;
+    transform: none;
+  }
+
+  .baby-car {
+    width: 72px;
+    padding: 6px;
+    border-radius: 22px;
+  }
+
+  .floating-contact__button {
+    width: 52px;
+    min-height: 52px;
+    padding: 6px 5px;
+  }
+
+  .floating-contact__button span {
+    width: 24px;
+    height: 24px;
+    font-size: 0.82rem;
+  }
+
+  .floating-contact__button strong {
+    font-size: 0.54rem;
   }
 }
