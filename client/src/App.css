@@ -1071,7 +1071,7 @@ input {
 }
 
 .baby-car__pupil-group {
-  transition: 90ms ease-out;
+  will-change: transform;
 }
 
 .floating-contact__button {
@@ -1137,7 +1137,6 @@ input {
   .baby-car__svg,
   .baby-car__pupil-group {
     animation: none;
-    transition: none;
   }
 }
 

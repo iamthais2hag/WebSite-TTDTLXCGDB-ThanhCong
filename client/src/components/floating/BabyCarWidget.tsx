@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type PupilOffset = {
   x: number;
@@ -7,6 +7,10 @@ type PupilOffset = {
 
 const DEFAULT_PUPIL_OFFSET: PupilOffset = { x: 0, y: 0 };
 const PUPIL_LIMIT = 8;
+const SVG_WIDTH = 300;
+const SVG_HEIGHT = 200;
+const LEFT_EYE_CENTER = { x: 100, y: 120 };
+const RIGHT_EYE_CENTER = { x: 200, y: 120 };
 
 export function calculatePupilOffset(
   mouseX: number,
@@ -33,9 +37,9 @@ export function calculatePupilOffset(
 }
 
 export function BabyCarWidget() {
-  const carRef = useRef<HTMLDivElement | null>(null);
-  const frameRef = useRef<number | null>(null);
-  const [pupilOffset, setPupilOffset] = useState(DEFAULT_PUPIL_OFFSET);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const leftPupilRef = useRef<SVGGElement | null>(null);
+  const rightPupilRef = useRef<SVGGElement | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined" || typeof document === "undefined") {
@@ -50,51 +54,50 @@ export function BabyCarWidget() {
       return undefined;
     }
 
-    const updateEyes = (event: MouseEvent) => {
-      if (frameRef.current !== null) {
-        window.cancelAnimationFrame(frameRef.current);
-      }
-
-      frameRef.current = window.requestAnimationFrame(() => {
-        const carBox = carRef.current?.getBoundingClientRect();
-
-        if (!carBox) {
-          return;
-        }
-
-        setPupilOffset(
-          calculatePupilOffset(
-            event.clientX,
-            event.clientY,
-            carBox.left + carBox.width / 2,
-            carBox.top + carBox.height * 0.6,
-          ),
-        );
-      });
+    const applyPupilOffset = (target: SVGGElement | null, offset: PupilOffset) => {
+      target?.setAttribute("transform", `translate(${offset.x} ${offset.y})`);
     };
 
-    const resetEyes = () => setPupilOffset(DEFAULT_PUPIL_OFFSET);
+    const resetEyes = () => {
+      applyPupilOffset(leftPupilRef.current, DEFAULT_PUPIL_OFFSET);
+      applyPupilOffset(rightPupilRef.current, DEFAULT_PUPIL_OFFSET);
+    };
 
-    window.addEventListener("mousemove", updateEyes);
+    const updateEyes = (event: PointerEvent) => {
+      const svgBox = svgRef.current?.getBoundingClientRect();
+
+      if (!svgBox) {
+        return;
+      }
+
+      const pointerX = ((event.clientX - svgBox.left) / svgBox.width) * SVG_WIDTH;
+      const pointerY = ((event.clientY - svgBox.top) / svgBox.height) * SVG_HEIGHT;
+
+      applyPupilOffset(
+        leftPupilRef.current,
+        calculatePupilOffset(pointerX, pointerY, LEFT_EYE_CENTER.x, LEFT_EYE_CENTER.y),
+      );
+      applyPupilOffset(
+        rightPupilRef.current,
+        calculatePupilOffset(pointerX, pointerY, RIGHT_EYE_CENTER.x, RIGHT_EYE_CENTER.y),
+      );
+    };
+
+    window.addEventListener("pointermove", updateEyes, { passive: true });
     document.addEventListener("mouseleave", resetEyes);
 
     return () => {
-      window.removeEventListener("mousemove", updateEyes);
+      window.removeEventListener("pointermove", updateEyes);
       document.removeEventListener("mouseleave", resetEyes);
-
-      if (frameRef.current !== null) {
-        window.cancelAnimationFrame(frameRef.current);
-      }
     };
   }, []);
 
-  const pupilTransform = `translate(${pupilOffset.x} ${pupilOffset.y})`;
-
   return (
-    <div aria-label="Baby car mascot" className="baby-car" ref={carRef}>
+    <div aria-label="Baby car mascot" className="baby-car">
       <svg
         aria-labelledby="baby-car-title"
         className="baby-car__svg"
+        ref={svgRef}
         role="img"
         viewBox="0 0 300 200"
       >
@@ -160,11 +163,11 @@ export function BabyCarWidget() {
         <g className="baby-car__eyes">
           <circle className="baby-car__eye" cx="100" cy="120" fill="#ffffff" r="24" />
           <circle className="baby-car__eye" cx="200" cy="120" fill="#ffffff" r="24" />
-          <g className="baby-car__pupil-group" transform={pupilTransform}>
+          <g className="baby-car__pupil-group" ref={leftPupilRef} transform="translate(0 0)">
             <circle className="baby-car__pupil" cx="100" cy="120" fill="#101d35" r="9" />
             <circle className="baby-car__pupil-shine" cx="96" cy="116" fill="#ffffff" r="3" />
           </g>
-          <g className="baby-car__pupil-group" transform={pupilTransform}>
+          <g className="baby-car__pupil-group" ref={rightPupilRef} transform="translate(0 0)">
             <circle className="baby-car__pupil" cx="200" cy="120" fill="#101d35" r="9" />
             <circle className="baby-car__pupil-shine" cx="196" cy="116" fill="#ffffff" r="3" />
           </g>
