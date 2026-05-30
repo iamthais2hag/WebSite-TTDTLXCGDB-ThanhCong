@@ -2,6 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { trainingGroups } from "../pages/EnrollmentPage";
+import { ZALO_OA_URL } from "../siteConfig";
 import { CourseDetailModal } from "./CourseDetailModal";
 
 describe("CourseDetailModal", () => {
@@ -37,6 +38,8 @@ describe("CourseDetailModal", () => {
     expect(markup).toContain("Điều kiện");
     expect(markup).toContain("Gọi tư vấn");
     expect(markup).toContain("Zalo");
+    expect(markup).toContain(`href="${ZALO_OA_URL}"`);
+    expect(markup).toContain('href="tel:0926236239"');
     expect(markup).toContain("Đóng");
     expect(markup).toContain('aria-label="Đóng"');
     expect(markup).toContain('aria-label="Đóng chi tiết hạng đào tạo"');

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { CONSULT_PHONE } from "../siteConfig";
+import { CONSULT_PHONE, ZALO_OA_URL } from "../siteConfig";
 import type { TrainingCourse } from "../pages/EnrollmentPage";
 
 const consultPhoneHref = CONSULT_PHONE.replace(/\s/g, "");
@@ -99,7 +99,7 @@ export function CourseDetailModal({ course, onClose }: CourseDetailModalProps) {
           </a>
           <a
             className="course-modal__button course-modal__button--zalo"
-            href={`https://zalo.me/${consultPhoneHref}`}
+            href={ZALO_OA_URL}
             rel="noreferrer"
             target="_blank"
           >

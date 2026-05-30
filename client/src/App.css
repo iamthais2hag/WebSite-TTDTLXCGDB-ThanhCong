@@ -1041,24 +1041,25 @@ input {
 
 .floating-contact {
   position: fixed;
-  top: 58%;
-  right: 18px;
+  top: auto;
+  right: 14px;
+  bottom: 42px;
   z-index: 35;
   display: grid;
-  gap: 10px;
+  gap: 8px;
   justify-items: center;
-  transform: translateY(-50%);
+  transform: none;
 }
 
 .baby-car {
-  width: 96px;
-  padding: 8px;
-  border: 1px solid var(--border-soft);
-  border-radius: 26px;
+  width: 84px;
+  padding: 6px;
+  border: 1px solid rgba(0, 96, 170, 0.14);
+  border-radius: 24px;
   background:
     radial-gradient(circle at 70% 0%, #fff4cf 0, transparent 42%),
     linear-gradient(180deg, #ffffff 0%, #edf4ff 100%);
-  box-shadow: 0 14px 32px rgba(0, 79, 147, 0.18);
+  box-shadow: 0 10px 24px rgba(0, 79, 147, 0.18);
 }
 
 .baby-car__svg {
@@ -1075,34 +1076,43 @@ input {
 }
 
 .floating-contact__button {
-  width: 62px;
-  min-height: 62px;
+  width: 56px;
+  min-height: 56px;
   display: grid;
   place-items: center;
-  gap: 2px;
-  padding: 7px 6px;
-  border: 1px solid var(--border-soft);
+  gap: 1px;
+  padding: 6px 5px;
+  border: 1px solid rgba(0, 96, 170, 0.13);
   border-radius: 999px;
   background: #ffffff;
-  box-shadow: 0 12px 28px rgba(0, 79, 147, 0.18);
+  box-shadow: 0 9px 22px rgba(0, 79, 147, 0.18);
+  text-decoration: none;
   text-align: center;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.floating-contact__button:hover {
+  box-shadow: 0 12px 26px rgba(0, 79, 147, 0.22);
+  transform: translateY(-2px);
 }
 
 .floating-contact__button span {
-  width: 28px;
-  height: 28px;
+  width: 27px;
+  height: 27px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 900;
   line-height: 1;
 }
 
 .floating-contact__button strong {
   color: var(--text-main);
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 900;
   line-height: 1.1;
 }
@@ -1279,6 +1289,18 @@ input {
 
 .site-footer__list li {
   margin: 0;
+}
+
+.site-footer__list a {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-footer__list a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .site-footer__bottom {

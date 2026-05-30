@@ -6,7 +6,7 @@ import bImage from "../assets/b.png";
 import cImage from "../assets/c.png";
 import c1Image from "../assets/c1.png";
 import nhImage from "../assets/nh.png";
-import { CONSULT_PHONE } from "../siteConfig";
+import { CONSULT_PHONE, ZALO_OA_URL } from "../siteConfig";
 
 const consultPhoneHref = CONSULT_PHONE.replace(/\s/g, "");
 
@@ -160,7 +160,7 @@ export function EnrollmentPage() {
               Xem chi tiết tuyển sinh
               <span aria-hidden="true">›</span>
             </a>
-            <a className="enrollment-cta__button" href={`https://zalo.me/${consultPhoneHref}`}>
+            <a className="enrollment-cta__button" href={ZALO_OA_URL} rel="noreferrer" target="_blank">
               Liên hệ qua Zalo
             </a>
             <a

@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { App } from "./App";
-import { APP_NAV_ITEMS, SITE_AGENCY_NAME, SITE_BRAND_NAME, SITE_SLOGAN } from "./siteConfig";
+import { APP_NAV_ITEMS, SITE_AGENCY_NAME, SITE_BRAND_NAME, SITE_SLOGAN, ZALO_OA_URL } from "./siteConfig";
 
 const appCss = readFileSync(
   fileURLToPath(new URL("./App.css", import.meta.url)),
@@ -85,6 +85,7 @@ describe("App shell", () => {
     expect(markup).toContain("Xem chi tiết tuyển sinh");
     expect(markup).toContain("href=\"#tuyen-sinh\"");
     expect(markup).toContain("Liên hệ qua Zalo");
+    expect(markup).toContain(`href="${ZALO_OA_URL}"`);
     expect(markup).toContain("Gọi điện tư vấn");
     expect(markup).not.toContain('role="dialog"');
     expect(markup).not.toContain("A2");
@@ -104,7 +105,11 @@ describe("App shell", () => {
     expect(markup).toContain("sát hạch đúng chuẩn");
     expect(markup).toContain("Xem khóa học");
     expect(markup).toContain("Đăng ký tư vấn");
-    expect(markup).toContain("Gọi 0926 236 239");
+    expect(markup).toContain("Gọi điện tư vấn");
+    const previousVisiblePhone = "0926 " + "236 " + "239";
+    expect(markup).not.toContain(`Gọi ${previousVisiblePhone}`);
+    expect(markup).not.toContain(previousVisiblePhone);
+    expect(markup).toContain('href="tel:0926236239"');
     expect(markup).toContain("Khai giảng liên tục");
     expect(markup).toContain("Tư vấn rõ ràng");
     expect(markup).toContain("Học thực hành bài bản");

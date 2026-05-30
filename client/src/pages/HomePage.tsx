@@ -43,7 +43,7 @@ export function HomePage() {
             Xem khóa học
           </a>
           <a className="button-link" href={phoneHref}>
-            Gọi {CONSULT_PHONE}
+            Gọi điện tư vấn
           </a>
         </div>
         <div className="hero-banner__badges" aria-label="Điểm nổi bật">

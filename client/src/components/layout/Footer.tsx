@@ -5,9 +5,11 @@ import {
   SITE_BRAND_NAME,
   SITE_NAME,
   SITE_SLOGAN,
+  ZALO_OA_URL,
 } from "../../siteConfig";
 
 const FOOTER_YEAR = 2026;
+const consultPhoneHref = CONSULT_PHONE.replace(/\s/g, "");
 
 export function Footer() {
   return (
@@ -45,8 +47,14 @@ export function Footer() {
         <div className="site-footer__column">
           <h2 className="site-footer__heading">Liên hệ</h2>
           <ul className="site-footer__list">
-            <li>Zalo OA</li>
-            <li>{CONSULT_PHONE}</li>
+            <li>
+              <a href={ZALO_OA_URL} rel="noreferrer" target="_blank">
+                Zalo OA
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${consultPhoneHref}`}>Gọi điện tư vấn</a>
+            </li>
             <li>Thông tin được cập nhật theo hồ sơ trung tâm</li>
           </ul>
         </div>

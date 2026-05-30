@@ -19,11 +19,11 @@ describe("FloatingContact", () => {
     expect(markup).toContain('href="tel:0926236239"');
   });
 
-  it("keeps the Zalo OA placeholder explicit until the official link is configured", () => {
+  it("uses the official Zalo OA link", () => {
     const markup = renderToStaticMarkup(createElement(FloatingContact));
 
-    expect(ZALO_OA_URL).toBe("#cap-nhat-zalo-oa");
-    expect(ZALO_OA_STATUS).toContain("trước production");
+    expect(ZALO_OA_URL).toBe("https://zalo.me/4014777605826154304");
+    expect(ZALO_OA_STATUS).toContain("Zalo OA chính thức");
     expect(markup).toContain(`href="${ZALO_OA_URL}"`);
     expect(markup).toContain(ZALO_OA_STATUS);
   });
