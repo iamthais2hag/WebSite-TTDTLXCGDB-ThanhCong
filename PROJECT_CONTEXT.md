@@ -107,3 +107,18 @@ Quy tắc:
 - Không đưa hotline/Zalo OA lên đầu trang.
 - Không đưa ảnh học viên runtime vào `client/src/assets/`.
 - Không commit file runtime hoặc build output.
+
+## 10. Local/Staging safety runbook
+
+Trước khi chạy thử database, upload ảnh hoặc sync với dữ liệu thật, dùng `docs/STAGING-RUNBOOK.md` làm checklist vận hành.
+
+Các nguyên tắc chính:
+
+- Không tạo hoặc commit `.env` thật.
+- Không connect MySQL thật, SQL Server thật hoặc API production nếu chưa có xác nhận riêng.
+- Không chạy migration thật hoặc sync thật trong bước chuẩn bị tài liệu.
+- Chỉ dùng MySQL test/staging cho lần chạy thử đầu.
+- Batch sync đầu tiên nên giới hạn 1-5 record.
+- `API_URL` production bắt buộc dùng HTTPS/TLS.
+- Không log raw SoCMT/CCCD, secret, password hoặc connection string.
+- Không commit `sync-tool/last-sync.json` hoặc ảnh học viên runtime.

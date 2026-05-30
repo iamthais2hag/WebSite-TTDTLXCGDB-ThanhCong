@@ -160,3 +160,16 @@ Không commit các file/thư mục sau:
 - `sync-tool/last-sync.json`
 
 Chỉ commit `.env.example` và `sync-tool/.env.example` nếu không chứa secret thật.
+
+## 11. Local/Staging runbook
+
+Trước khi chạy thử database, upload ảnh hoặc sync với dữ liệu thật, xem checklist an toàn trong `docs/STAGING-RUNBOOK.md`.
+
+Runbook này ghi rõ:
+
+- File env cần tạo thủ công và không commit.
+- Thứ tự chạy thử local/staging.
+- Các cảnh báo bảo mật cho `X-SYNC-SECRET`, `DATABASE_URL`, SQL Server password, SoCMT/CCCD và ảnh học viên runtime.
+- Checklist trước sync thật và trước production.
+
+Không connect database thật, không chạy migration thật, không chạy sync thật hoặc deploy production nếu chưa có xác nhận vận hành riêng.
