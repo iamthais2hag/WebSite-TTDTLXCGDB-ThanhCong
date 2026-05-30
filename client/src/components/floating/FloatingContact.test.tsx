@@ -23,16 +23,19 @@ describe("FloatingContact", () => {
     const markup = renderToStaticMarkup(createElement(BabyCarWidget));
 
     expect(markup).toContain("<svg");
+    expect(markup).toContain('viewBox="0 0 300 200"');
     expect(markup).toContain('aria-label="Baby car mascot"');
     expect(markup).toContain("TẬP LÁI");
+    expect(markup).toContain("THÀNH CÔNG");
     expect(markup.match(/class="baby-car__eye"/g)).toHaveLength(2);
-    expect(markup.match(/class="baby-car__pupil"/g)).toHaveLength(2);
+    expect(markup.match(/class="baby-car__pupil-group"/g)).toHaveLength(2);
+    expect(markup.match(/class="baby-car__pupil-shine"/g)).toHaveLength(2);
   });
 
   it("keeps pupil movement clamped and safe for reduced-motion environments", () => {
-    const offset = calculatePupilOffset(1000, 1000, 0, 0, 7);
+    const offset = calculatePupilOffset(1000, 1000, 0, 0, 8);
 
-    expect(Math.hypot(offset.x, offset.y)).toBeLessThanOrEqual(7.01);
+    expect(Math.hypot(offset.x, offset.y)).toBeLessThanOrEqual(8.01);
     expect(() => renderToStaticMarkup(createElement(BabyCarWidget))).not.toThrow();
   });
 

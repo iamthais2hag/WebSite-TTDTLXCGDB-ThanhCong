@@ -6,7 +6,7 @@ type PupilOffset = {
 };
 
 const DEFAULT_PUPIL_OFFSET: PupilOffset = { x: 0, y: 0 };
-const PUPIL_LIMIT = 7;
+const PUPIL_LIMIT = 8;
 
 export function calculatePupilOffset(
   mouseX: number,
@@ -23,11 +23,12 @@ export function calculatePupilOffset(
     return DEFAULT_PUPIL_OFFSET;
   }
 
-  const scale = Math.min(limit, distance) / distance;
+  const angle = Math.atan2(deltaY, deltaX);
+  const travel = Math.min(distance * 0.2, limit);
 
   return {
-    x: Math.round(deltaX * scale * 100) / 100,
-    y: Math.round(deltaY * scale * 100) / 100,
+    x: Math.round(Math.cos(angle) * travel * 100) / 100,
+    y: Math.round(Math.sin(angle) * travel * 100) / 100,
   };
 }
 
@@ -42,8 +43,10 @@ export function BabyCarWidget() {
     }
 
     const isTouchDevice = window.matchMedia?.("(pointer: coarse)").matches ?? false;
+    const prefersReducedMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 
-    if (isTouchDevice) {
+    if (isTouchDevice || prefersReducedMotion) {
       return undefined;
     }
 
@@ -64,7 +67,7 @@ export function BabyCarWidget() {
             event.clientX,
             event.clientY,
             carBox.left + carBox.width / 2,
-            carBox.top + carBox.height * 0.38,
+            carBox.top + carBox.height * 0.6,
           ),
         );
       });
@@ -85,64 +88,86 @@ export function BabyCarWidget() {
     };
   }, []);
 
+  const pupilTransform = `translate(${pupilOffset.x} ${pupilOffset.y})`;
+
   return (
     <div aria-label="Baby car mascot" className="baby-car" ref={carRef}>
       <svg
         aria-labelledby="baby-car-title"
         className="baby-car__svg"
         role="img"
-        viewBox="0 0 190 128"
+        viewBox="0 0 300 200"
       >
         <title id="baby-car-title">Baby car mascot</title>
-        <g className="baby-car__body">
-          <path
-            d="M35 74c6-22 21-36 45-42h42c20 5 33 18 39 40l11 8v18H20V82l15-8Z"
-            fill="#d71920"
-          />
-          <path
-            d="M59 37h57c14 3 25 13 32 28H43c4-14 9-23 16-28Z"
-            fill="#fff7f7"
-          />
-          <path
-            d="M69 42h41c10 2 18 8 23 18H56c3-9 7-15 13-18Z"
-            fill="#edf4ff"
-          />
-          <rect fill="#005fa8" height="18" rx="5" width="58" x="65" y="75" />
+        <g className="baby-car__beacon">
+          <rect fill="#005fa8" height="18" rx="6" width="86" x="107" y="20" />
+          <circle cx="126" cy="19" fill="#f6c343" r="9" />
+          <circle cx="150" cy="17" fill="#d71920" r="10" />
+          <circle cx="174" cy="19" fill="#005fa8" r="9" />
           <text
             fill="#ffffff"
             fontFamily="Arial, sans-serif"
             fontSize="12"
             fontWeight="800"
             textAnchor="middle"
-            x="94"
-            y="88"
+            x="150"
+            y="34"
+          >
+            THÀNH CÔNG
+          </text>
+        </g>
+
+        <g className="baby-car__body">
+          <path
+            d="M43 114c11-38 39-60 82-66h52c39 6 65 28 77 66l24 16v35H22v-34l21-17Z"
+            fill="#d71920"
+          />
+          <path
+            d="M80 62h94c25 4 45 22 57 51H57c5-27 12-43 23-51Z"
+            fill="#fff7f7"
+          />
+          <path
+            d="M92 70h70c18 3 32 15 41 34H74c4-17 10-28 18-34Z"
+            fill="#edf4ff"
+          />
+          <path d="M36 134h46" stroke="#ffffff" strokeLinecap="round" strokeWidth="10" />
+          <path d="M218 134h46" stroke="#ffffff" strokeLinecap="round" strokeWidth="10" />
+          <path
+            d="M109 139c10 10 22 15 41 15s31-5 41-15"
+            fill="none"
+            stroke="#101d35"
+            strokeLinecap="round"
+            strokeWidth="8"
+          />
+          <rect fill="#005fa8" height="22" rx="7" width="76" x="112" y="154" />
+          <text
+            fill="#ffffff"
+            fontFamily="Arial, sans-serif"
+            fontSize="14"
+            fontWeight="800"
+            textAnchor="middle"
+            x="150"
+            y="170"
           >
             TẬP LÁI
           </text>
-          <circle cx="51" cy="98" fill="#101d35" r="14" />
-          <circle cx="139" cy="98" fill="#101d35" r="14" />
-          <circle cx="51" cy="98" fill="#ffffff" r="7" />
-          <circle cx="139" cy="98" fill="#ffffff" r="7" />
-          <path d="M28 82h28" stroke="#ffffff" strokeLinecap="round" strokeWidth="6" />
-          <path d="M134 82h28" stroke="#ffffff" strokeLinecap="round" strokeWidth="6" />
+          <circle cx="66" cy="164" fill="#101d35" r="22" />
+          <circle cx="234" cy="164" fill="#101d35" r="22" />
+          <circle cx="66" cy="164" fill="#ffffff" r="11" />
+          <circle cx="234" cy="164" fill="#ffffff" r="11" />
         </g>
+
         <g className="baby-car__eyes">
-          <circle className="baby-car__eye" cx="76" cy="60" fill="#ffffff" r="12" />
-          <circle className="baby-car__eye" cx="114" cy="60" fill="#ffffff" r="12" />
-          <circle
-            className="baby-car__pupil"
-            cx={76 + pupilOffset.x}
-            cy={60 + pupilOffset.y}
-            fill="#101d35"
-            r="4.5"
-          />
-          <circle
-            className="baby-car__pupil"
-            cx={114 + pupilOffset.x}
-            cy={60 + pupilOffset.y}
-            fill="#101d35"
-            r="4.5"
-          />
+          <circle className="baby-car__eye" cx="100" cy="120" fill="#ffffff" r="24" />
+          <circle className="baby-car__eye" cx="200" cy="120" fill="#ffffff" r="24" />
+          <g className="baby-car__pupil-group" transform={pupilTransform}>
+            <circle className="baby-car__pupil" cx="100" cy="120" fill="#101d35" r="9" />
+            <circle className="baby-car__pupil-shine" cx="96" cy="116" fill="#ffffff" r="3" />
+          </g>
+          <g className="baby-car__pupil-group" transform={pupilTransform}>
+            <circle className="baby-car__pupil" cx="200" cy="120" fill="#101d35" r="9" />
+            <circle className="baby-car__pupil-shine" cx="196" cy="116" fill="#ffffff" r="3" />
+          </g>
         </g>
       </svg>
     </div>

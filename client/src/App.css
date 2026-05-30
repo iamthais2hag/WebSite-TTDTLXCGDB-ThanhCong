@@ -1051,8 +1051,8 @@ input {
 }
 
 .baby-car {
-  width: 88px;
-  padding: 8px 8px 6px;
+  width: 96px;
+  padding: 8px;
   border: 1px solid var(--border-soft);
   border-radius: 26px;
   background:
@@ -1070,7 +1070,7 @@ input {
   animation: baby-car-idle 2.4s ease-in-out infinite;
 }
 
-.baby-car__pupil {
+.baby-car__pupil-group {
   transition: 90ms ease-out;
 }
 
@@ -1135,7 +1135,7 @@ input {
 
 @media (prefers-reduced-motion: reduce) {
   .baby-car__svg,
-  .baby-car__pupil {
+  .baby-car__pupil-group {
     animation: none;
     transition: none;
   }
@@ -2329,7 +2329,7 @@ input {
   }
 
   .baby-car {
-    width: 72px;
+    width: 76px;
     padding: 6px;
     border-radius: 22px;
   }
