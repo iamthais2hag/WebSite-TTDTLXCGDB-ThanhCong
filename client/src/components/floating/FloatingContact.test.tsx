@@ -8,7 +8,7 @@ import { FloatingContact } from "./FloatingContact";
 describe("FloatingContact", () => {
   it("renders the quick contact stack in the required order", () => {
     const markup = renderToStaticMarkup(createElement(FloatingContact));
-    const babyCarIndex = markup.indexOf("Baby car");
+    const babyCarIndex = markup.indexOf("Baby car mascot");
     const zaloIndex = markup.indexOf("Chat Zalo OA");
     const phoneIndex = markup.indexOf("Gọi điện tư vấn");
 
@@ -23,6 +23,7 @@ describe("FloatingContact", () => {
     const markup = renderToStaticMarkup(createElement(BabyCarWidget));
 
     expect(markup).toContain("<svg");
+    expect(markup).toContain('aria-label="Baby car mascot"');
     expect(markup).toContain("TẬP LÁI");
     expect(markup.match(/class="baby-car__eye"/g)).toHaveLength(2);
     expect(markup.match(/class="baby-car__pupil"/g)).toHaveLength(2);

@@ -86,14 +86,14 @@ export function BabyCarWidget() {
   }, []);
 
   return (
-    <div aria-label="Baby car tập lái" className="baby-car" ref={carRef}>
+    <div aria-label="Baby car mascot" className="baby-car" ref={carRef}>
       <svg
         aria-labelledby="baby-car-title"
         className="baby-car__svg"
         role="img"
         viewBox="0 0 190 128"
       >
-        <title id="baby-car-title">Baby car tập lái</title>
+        <title id="baby-car-title">Baby car mascot</title>
         <g className="baby-car__body">
           <path
             d="M35 74c6-22 21-36 45-42h42c20 5 33 18 39 40l11 8v18H20V82l15-8Z"
