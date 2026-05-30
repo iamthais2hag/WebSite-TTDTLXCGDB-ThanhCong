@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { ZALO_OA_URL } from "../../siteConfig";
+import { ZALO_OA_STATUS, ZALO_OA_URL } from "../../siteConfig";
 import { BabyCarWidget, calculatePupilOffset } from "./BabyCarWidget";
 import { FloatingContact } from "./FloatingContact";
 
@@ -17,6 +17,15 @@ describe("FloatingContact", () => {
     expect(phoneIndex).toBeGreaterThan(zaloIndex);
     expect(markup).toContain(`href="${ZALO_OA_URL}"`);
     expect(markup).toContain('href="tel:0926236239"');
+  });
+
+  it("keeps the Zalo OA placeholder explicit until the official link is configured", () => {
+    const markup = renderToStaticMarkup(createElement(FloatingContact));
+
+    expect(ZALO_OA_URL).toBe("#cap-nhat-zalo-oa");
+    expect(ZALO_OA_STATUS).toContain("trước production");
+    expect(markup).toContain(`href="${ZALO_OA_URL}"`);
+    expect(markup).toContain(ZALO_OA_STATUS);
   });
 
   it("renders the baby car SVG with two eyes and two pupils", () => {

@@ -2,13 +2,15 @@ import { CONSULT_PHONE, ZALO_OA_STATUS, ZALO_OA_URL } from "../../siteConfig";
 import { BabyCarWidget } from "./BabyCarWidget";
 
 const consultPhoneHref = CONSULT_PHONE.replace(/\s/g, "");
+const isZaloPlaceholder = ZALO_OA_URL.startsWith("#");
+const zaloAriaLabel = isZaloPlaceholder ? `Chat Zalo OA - ${ZALO_OA_STATUS}` : "Chat Zalo OA";
 
 export function FloatingContact() {
   return (
     <aside aria-label="Liên hệ nhanh" className="floating-contact">
       <BabyCarWidget />
       <a
-        aria-label="Chat Zalo OA"
+        aria-label={zaloAriaLabel}
         className="floating-contact__button floating-contact__button--zalo"
         href={ZALO_OA_URL}
         title={ZALO_OA_STATUS}
