@@ -165,6 +165,8 @@ Chỉ commit `.env.example` và `sync-tool/.env.example` nếu không chứa sec
 
 Trước khi chạy thử database, upload ảnh hoặc sync với dữ liệu thật, xem checklist an toàn trong `docs/STAGING-RUNBOOK.md`.
 
+Riêng các bước tạo DB local/staging, migration safety và rollback plan được ghi trong `docs/DATABASE-RUNBOOK.md`.
+
 Runbook này ghi rõ:
 
 - File env cần tạo thủ công và không commit.
