@@ -143,4 +143,16 @@ describe("App shell", () => {
       expect(normalizedMarkup).not.toContain(forbiddenText);
     }
   });
+
+  it("defines mobile responsive safeguards for header, content, floating contact, and modal", () => {
+    expect(appCss).toContain("@media (max-width: 768px)");
+    expect(appCss).toContain("@media (max-width: 480px)");
+    expect(appCss).toContain("overflow-x: clip");
+    expect(appCss).toContain(".course-modal__panel--bottom-sheet");
+    expect(appCss).toContain("max-height: 90vh");
+    expect(appCss).toContain(".floating-contact");
+    expect(appCss).toContain("width: 56px");
+    expect(appCss).toContain("clip-path: inset(50%)");
+    expect(appCss).toContain("grid-template-columns: 1fr");
+  });
 });

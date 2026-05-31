@@ -27,6 +27,7 @@ describe("CourseDetailModal", () => {
 
     expect(markup).toContain('role="dialog"');
     expect(markup).toContain('aria-modal="true"');
+    expect(markup).toContain("course-modal__panel--bottom-sheet");
     expect(markup).toContain("Mô tô hạng A1");
     expect(markup).toContain("Hạng A1");
     expect(markup).toContain("Học phí");

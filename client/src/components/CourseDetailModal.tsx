@@ -47,7 +47,7 @@ export function CourseDetailModal({ course, onClose }: CourseDetailModalProps) {
       <section
         aria-labelledby="course-modal-title"
         aria-modal="true"
-        className="course-modal__panel"
+        className="course-modal__panel course-modal__panel--bottom-sheet"
         role="dialog"
       >
         <header className="course-modal__header">
