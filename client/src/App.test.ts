@@ -3,7 +3,9 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { App } from "./App";
+import { App, AppRouteContent } from "./App";
+import { EnrollmentPage } from "./pages/EnrollmentPage";
+import { ROUTES, isRouteActive, normalizePathname } from "./routing";
 import { APP_NAV_ITEMS, SITE_AGENCY_NAME, SITE_BRAND_NAME, SITE_SLOGAN, ZALO_OA_URL } from "./siteConfig";
 
 const appCss = readFileSync(
@@ -23,6 +25,24 @@ describe("App shell", () => {
     expect(APP_NAV_ITEMS[0]?.label).toBe("Trang chủ");
     expect(APP_NAV_ITEMS[0]?.label).not.toBe("Tuyển sinh");
     expect(APP_NAV_ITEMS[1]?.label).toBe("Tuyển sinh");
+  });
+
+  it("uses standalone frontend routes and active route matching", () => {
+    expect(APP_NAV_ITEMS.map((item) => item.href)).toEqual([
+      ROUTES.home,
+      ROUTES.enrollment,
+      ROUTES.lookup,
+      ROUTES.announcements,
+      ROUTES.legal,
+    ]);
+    expect(normalizePathname("/")).toBe(ROUTES.home);
+    expect(normalizePathname("/tuyen-sinh")).toBe(ROUTES.enrollment);
+    expect(normalizePathname("/tra-cuu/")).toBe(ROUTES.lookup);
+    expect(normalizePathname("/thong-bao")).toBe(ROUTES.announcements);
+    expect(normalizePathname("/phap-ly")).toBe(ROUTES.legal);
+    expect(normalizePathname("/khong-ton-tai")).toBe(ROUTES.home);
+    expect(isRouteActive(ROUTES.lookup, ROUTES.lookup)).toBe(true);
+    expect(isRouteActive(ROUTES.lookup, ROUTES.enrollment)).toBe(false);
   });
 
   it("renders layout, header, navigation, and footer", () => {
@@ -50,28 +70,24 @@ describe("App shell", () => {
     expect(appCss).toContain("Be Vietnam Pro");
   });
 
-  it("renders the basic public pages with enrollment after official sections", () => {
-    const markup = renderToStaticMarkup(createElement(App));
-    const homeIndex = markup.indexOf("Học lái xe bài bản,");
-    const overviewIndex = markup.indexOf("Giới thiệu trung tâm");
-    const enrollmentIndex = markup.indexOf("Danh sách hạng đào tạo");
-    const lookupIndex = markup.indexOf("Khu vực tra cứu thông tin đăng ký học");
-    const announcementsIndex = markup.indexOf("Thông báo mới");
-    const legalIndex = markup.indexOf("Văn bản và hướng dẫn liên quan");
+  it("renders one public route content area at a time", () => {
+    const homeMarkup = renderToStaticMarkup(createElement(AppRouteContent, { route: ROUTES.home }));
+    const enrollmentMarkup = renderToStaticMarkup(createElement(AppRouteContent, { route: ROUTES.enrollment }));
+    const lookupMarkup = renderToStaticMarkup(createElement(AppRouteContent, { route: ROUTES.lookup }));
+    const announcementsMarkup = renderToStaticMarkup(createElement(AppRouteContent, { route: ROUTES.announcements }));
+    const legalMarkup = renderToStaticMarkup(createElement(AppRouteContent, { route: ROUTES.legal }));
 
-    expect(homeIndex).toBeGreaterThanOrEqual(0);
-    expect(overviewIndex).toBeGreaterThan(homeIndex);
-    expect(lookupIndex).toBeGreaterThan(overviewIndex);
-    expect(announcementsIndex).toBeGreaterThan(lookupIndex);
-    expect(legalIndex).toBeGreaterThan(announcementsIndex);
-    expect(enrollmentIndex).toBeGreaterThan(legalIndex);
-    expect(markup).toContain("Các hạng đào tạo");
-    expect(markup).toContain("Trung tâm đào tạo đầy đủ các hạng giấy phép lái xe");
-    expect(markup).not.toContain("Thông tin tuyển sinh được đặt" + " sau");
+    expect(homeMarkup).toContain("Học lái xe bài bản,");
+    expect(homeMarkup).toContain("Giới thiệu trung tâm");
+    expect(homeMarkup).not.toContain("Danh sách hạng đào tạo");
+    expect(enrollmentMarkup).toContain("Danh sách hạng đào tạo");
+    expect(lookupMarkup).toContain("Khu vực tra cứu thông tin đăng ký học");
+    expect(announcementsMarkup).toContain("Thông báo mới");
+    expect(legalMarkup).toContain("Văn bản và hướng dẫn liên quan");
   });
 
   it("renders all approved enrollment groups", () => {
-    const markup = renderToStaticMarkup(createElement(App));
+    const markup = renderToStaticMarkup(createElement(EnrollmentPage));
 
     expect(markup).toContain("A1");
     expect(markup).toContain("A/AM");
@@ -86,7 +102,7 @@ describe("App shell", () => {
     expect(markup).not.toContain("training-card__group-name");
     expect(markup).toContain("Sẵn sàng bắt đầu hành trình học lái xe?");
     expect(markup).toContain("Xem chi tiết tuyển sinh");
-    expect(markup).toContain("href=\"#tuyen-sinh\"");
+    expect(markup).toContain('href="/tuyen-sinh"');
     expect(markup).toContain("Liên hệ qua Zalo");
     expect(markup).toContain(`href="${ZALO_OA_URL}"`);
     expect(markup).toContain("Gọi điện tư vấn");

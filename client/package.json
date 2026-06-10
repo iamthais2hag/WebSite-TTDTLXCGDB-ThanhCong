@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --config vite.config.mjs --host 0.0.0.0",
-    "build": "tsc --noEmit && vite build --config vite.config.mjs",
+    "dev": "vite --config vite.config.mjs --configLoader runner --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build --config vite.config.mjs --configLoader runner",
     "check": "tsc --noEmit",
-    "test": "vitest run --config vite.config.mjs",
+    "test": "vitest run --config ../vitest.client.config.mjs --configLoader runner",
     "lint": "tsc --noEmit"
   },
   "dependencies": {

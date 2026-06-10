@@ -6,16 +6,39 @@ import { EnrollmentPage } from "./pages/EnrollmentPage";
 import { HomePage } from "./pages/HomePage";
 import { LegalPage } from "./pages/LegalPage";
 import { LookupPage } from "./pages/LookupPage";
+import { type AppRoutePath, ROUTES, useAppRoute } from "./routing";
 
-export function App() {
+export function AppRouteContent({ route }: { route: AppRoutePath }) {
+  if (route === ROUTES.enrollment) {
+    return <EnrollmentPage />;
+  }
+
+  if (route === ROUTES.lookup) {
+    return <LookupPage />;
+  }
+
+  if (route === ROUTES.announcements) {
+    return <AnnouncementsPage />;
+  }
+
+  if (route === ROUTES.legal) {
+    return <LegalPage />;
+  }
+
   return (
-    <Layout>
+    <>
       <HomePage />
       <CenterOverviewPage />
-      <LookupPage />
-      <AnnouncementsPage />
-      <LegalPage />
-      <EnrollmentPage />
+    </>
+  );
+}
+
+export function App() {
+  const route = useAppRoute();
+
+  return (
+    <Layout>
+      <AppRouteContent route={route} />
     </Layout>
   );
 }

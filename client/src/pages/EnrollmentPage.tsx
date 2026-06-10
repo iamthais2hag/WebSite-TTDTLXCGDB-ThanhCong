@@ -6,6 +6,7 @@ import bImage from "../assets/b.png";
 import cImage from "../assets/c.png";
 import c1Image from "../assets/c1.png";
 import nhImage from "../assets/nh.png";
+import { ROUTES, RouteLink } from "../routing";
 import { CONSULT_PHONE, ZALO_OA_URL } from "../siteConfig";
 
 const consultPhoneHref = CONSULT_PHONE.replace(/\s/g, "");
@@ -153,13 +154,13 @@ export function EnrollmentPage() {
           <h3 id="enrollment-cta-title">Sẵn sàng bắt đầu hành trình học lái xe?</h3>
           <p>Liên hệ ngay để được tư vấn khóa học, hồ sơ đăng ký và lịch học phù hợp.</p>
           <div className="enrollment-cta__actions">
-            <a
+            <RouteLink
               className="enrollment-cta__button enrollment-cta__button--detail"
-              href="#tuyen-sinh"
+              to={ROUTES.enrollment}
             >
               Xem chi tiết tuyển sinh
               <span aria-hidden="true">›</span>
-            </a>
+            </RouteLink>
             <a className="enrollment-cta__button" href={ZALO_OA_URL} rel="noreferrer" target="_blank">
               Liên hệ qua Zalo
             </a>

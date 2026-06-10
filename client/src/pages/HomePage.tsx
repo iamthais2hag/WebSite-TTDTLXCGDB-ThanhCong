@@ -1,4 +1,5 @@
 import carVideo from "../assets/car.mp4";
+import { ROUTES, RouteLink } from "../routing";
 import { CONSULT_PHONE } from "../siteConfig";
 
 const heroBadges = [
@@ -39,9 +40,9 @@ export function HomePage() {
           quy định và đội ngũ hỗ trợ tận tâm.
         </p>
         <div className="hero-banner__actions" aria-label="Lối tắt nội dung chính">
-          <a className="button-link button-link--primary" href="#tuyen-sinh">
+          <RouteLink className="button-link button-link--primary" to={ROUTES.enrollment}>
             Xem khóa học
-          </a>
+          </RouteLink>
           <a className="button-link" href={phoneHref}>
             Gọi điện tư vấn
           </a>

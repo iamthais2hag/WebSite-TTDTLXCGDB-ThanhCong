@@ -8,23 +8,23 @@ export const ZALO_OA_STATUS = "Zalo OA chính thức của Trung tâm Thành Cô
 
 export const APP_NAV_ITEMS = [
   {
-    href: "#trang-chu",
+    href: "/",
     label: "Trang chủ",
   },
   {
-    href: "#tuyen-sinh",
+    href: "/tuyen-sinh",
     label: "Tuyển sinh",
   },
   {
-    href: "#tra-cuu",
+    href: "/tra-cuu",
     label: "Tra cứu",
   },
   {
-    href: "#thong-bao",
+    href: "/thong-bao",
     label: "Thông báo",
   },
   {
-    href: "#phap-ly",
+    href: "/phap-ly",
     label: "Pháp lý",
   },
 ] as const;
