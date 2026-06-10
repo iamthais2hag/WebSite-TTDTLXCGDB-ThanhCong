@@ -155,6 +155,9 @@ describe("App shell", () => {
     expect(appCss).toContain("max-height: 90vh");
     expect(appCss).toContain(".floating-contact");
     expect(appCss).toContain("width: 56px");
+    expect(appCss).toContain("flex-wrap: wrap");
+    expect(appCss).toContain("width: 44px");
+    expect(appCss).toContain("width: 34px");
     expect(appCss).toContain("clip-path: inset(50%)");
     expect(appCss).toContain("grid-template-columns: 1fr");
   });
