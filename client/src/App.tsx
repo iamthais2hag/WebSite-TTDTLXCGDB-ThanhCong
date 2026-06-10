@@ -7,6 +7,7 @@ import { HomePage } from "./pages/HomePage";
 import { LegalPage } from "./pages/LegalPage";
 import { LookupPage } from "./pages/LookupPage";
 import { type AppRoutePath, ROUTES, useAppRoute } from "./routing";
+import { usePageMeta } from "./seo";
 
 export function AppRouteContent({ route }: { route: AppRoutePath }) {
   if (route === ROUTES.enrollment) {
@@ -35,6 +36,7 @@ export function AppRouteContent({ route }: { route: AppRoutePath }) {
 
 export function App() {
   const route = useAppRoute();
+  usePageMeta(route);
 
   return (
     <Layout>
