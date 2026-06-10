@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import { syncPhotoRouter } from "./routes/syncPhoto.js";
+import { configureFrontendStatic } from "./services/frontendStatic.js";
 import { configureStudentUploads } from "./services/studentUploads.js";
 import { createContext } from "./trpc/context.js";
 import { appRouter } from "./trpc/routers/index.js";
@@ -28,3 +29,5 @@ app.use(
 );
 
 app.use("/api/sync", syncPhotoRouter);
+
+configureFrontendStatic(app);
