@@ -107,12 +107,21 @@ export function CenterOverviewPage() {
 
       <div className="overview-stats-grid" aria-label="Năng lực đào tạo của Trung tâm">
         {overviewStats.map((item) => (
-          <article className="overview-stat-card" key={item.value}>
-            <span className="overview-card__icon">
-              <OverviewIcon name={item.icon} />
-            </span>
-            <h3>{item.value}</h3>
-            <p className="overview-stat-card__label">{item.label}</p>
+          <article
+            className={`overview-stat-card${
+              item.icon === "graduation" ? " overview-stat-card--compact" : ""
+            }`}
+            key={item.value}
+          >
+            <div className="overview-stat-card__header">
+              <span className="overview-card__icon">
+                <OverviewIcon name={item.icon} />
+              </span>
+              <div className="overview-stat-card__title">
+                <h3>{item.value}</h3>
+                <p className="overview-stat-card__label">{item.label}</p>
+              </div>
+            </div>
             <p>{item.description}</p>
           </article>
         ))}

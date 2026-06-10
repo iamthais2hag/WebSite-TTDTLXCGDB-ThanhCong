@@ -1859,6 +1859,7 @@ input {
 .overview-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
   margin-bottom: 20px;
 }
 
@@ -1891,6 +1892,63 @@ input {
     border-color 160ms ease,
     box-shadow 160ms ease,
     transform 160ms ease;
+}
+
+.overview-stat-card__header {
+  display: block;
+}
+
+.overview-stat-card__title {
+  min-width: 0;
+}
+
+.overview-stat-card.overview-stat-card--compact {
+  min-height: 0;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.overview-stat-card--compact .overview-stat-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 7px;
+}
+
+.overview-stat-card--compact .overview-card__icon {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  margin: 0;
+  border-radius: 10px;
+}
+
+.overview-stat-card--compact .overview-card__icon svg {
+  width: 23px;
+  height: 23px;
+}
+
+.overview-stat-card--compact h3 {
+  margin: 0 0 5px;
+  color: var(--brand-blue-dark);
+  font-size: clamp(1.22rem, 1.45vw, 1.52rem);
+  line-height: 1.05;
+}
+
+.overview-stat-card--compact p.overview-stat-card__label {
+  margin: 0;
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-weight: 900;
+  line-height: 1.14;
+}
+
+.overview-stat-card--compact > p:last-child {
+  margin: 0;
+  color: var(--text-main);
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.34;
 }
 
 .overview-card:hover,
@@ -2603,6 +2661,37 @@ input {
   .overview-stat-card {
     min-height: auto;
     padding: 18px;
+  }
+
+  .overview-stat-card.overview-stat-card--compact {
+    padding: 10px 11px;
+    border-radius: 12px;
+  }
+
+  .overview-stat-card--compact .overview-stat-card__header {
+    gap: 9px;
+    margin-bottom: 6px;
+  }
+
+  .overview-stat-card--compact .overview-card__icon {
+    flex-basis: 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+  }
+
+  .overview-stat-card--compact h3 {
+    margin-bottom: 4px;
+    font-size: 1.16rem;
+  }
+
+  .overview-stat-card--compact p.overview-stat-card__label {
+    font-size: 0.82rem;
+  }
+
+  .overview-stat-card--compact > p:last-child {
+    font-size: 0.8rem;
+    line-height: 1.3;
   }
 
   .lookup-form {

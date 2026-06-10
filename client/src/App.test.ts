@@ -43,6 +43,9 @@ describe("App shell", () => {
     expect(markup).toContain(SITE_SLOGAN);
     expect(markup).toContain("5000+");
     expect(markup).toContain("overview-card__icon");
+    expect(markup).toContain("overview-stat-card--compact");
+    expect(markup).toContain("overview-stat-card__header");
+    expect(markup).toContain("overview-stat-card__title");
     expect(markup).toContain("Đăng ký tư vấn");
     expect(appCss).toContain("Be Vietnam Pro");
   });
