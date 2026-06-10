@@ -1,22 +1,19 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import {
-  ROUTE_META,
-  applyPageMeta,
-  getPageMeta,
-} from "./seo";
-import { ROUTES } from "./routing";
+import { ROUTE_META, applyPageMeta, getPageMeta } from "./seo";
+import { ROUTES, type AppRoutePath } from "./routing";
 
-type FakeMetaElement = {
+type FakeHeadElement = {
   attributes: Record<string, string>;
   getAttribute: (name: string) => string | null;
   setAttribute: (name: string, value: string) => void;
 };
 
 type FakeDocument = Document & {
-  metaElements: FakeMetaElement[];
+  linkElements: FakeHeadElement[];
+  metaElements: FakeHeadElement[];
 };
 
-function createFakeMetaElement(): FakeMetaElement {
+function createFakeElement(): FakeHeadElement {
   return {
     attributes: {},
     getAttribute(name) {
@@ -30,30 +27,56 @@ function createFakeMetaElement(): FakeMetaElement {
 
 function createFakeDocument(): FakeDocument {
   const fakeDocument = {
-    metaElements: [] as FakeMetaElement[],
+    linkElements: [] as FakeHeadElement[],
+    metaElements: [] as FakeHeadElement[],
     title: "",
     createElement(tagName: string) {
-      if (tagName !== "meta") {
+      if (tagName !== "meta" && tagName !== "link") {
         throw new Error(`Unsupported tag in SEO test: ${tagName}`);
       }
 
-      return createFakeMetaElement();
+      return createFakeElement();
     },
     head: {
-      append(metaElement: FakeMetaElement) {
-        fakeDocument.metaElements.push(metaElement);
+      append(element: FakeHeadElement) {
+        if (element.getAttribute("rel") === "canonical") {
+          fakeDocument.linkElements.push(element);
+          return;
+        }
+
+        fakeDocument.metaElements.push(element);
       },
     },
     querySelector(selector: string) {
-      if (selector !== 'meta[name="description"]') {
-        return null;
+      if (selector === 'link[rel="canonical"]') {
+        return (
+          fakeDocument.linkElements.find(
+            (linkElement) => linkElement.getAttribute("rel") === "canonical"
+          ) ?? null
+        );
       }
 
-      return (
-        fakeDocument.metaElements.find(
-          (metaElement) => metaElement.getAttribute("name") === "description"
-        ) ?? null
-      );
+      const nameMatch = selector.match(/^meta\[name="([^"]+)"\]$/);
+      if (nameMatch) {
+        const [, name] = nameMatch;
+        return (
+          fakeDocument.metaElements.find(
+            (metaElement) => metaElement.getAttribute("name") === name
+          ) ?? null
+        );
+      }
+
+      const propertyMatch = selector.match(/^meta\[property="([^"]+)"\]$/);
+      if (propertyMatch) {
+        const [, property] = propertyMatch;
+        return (
+          fakeDocument.metaElements.find(
+            (metaElement) => metaElement.getAttribute("property") === property
+          ) ?? null
+        );
+      }
+
+      return null;
     },
   };
 
@@ -67,71 +90,88 @@ describe("route SEO metadata", () => {
     doc = createFakeDocument();
   });
 
-  function descriptionContent() {
-    return doc.metaElements[0]?.getAttribute("content");
+  function canonicalHref() {
+    return doc.linkElements[0]?.getAttribute("href");
   }
 
-  it("sets title and description for the home route", () => {
-    const meta = applyPageMeta(ROUTES.home, doc);
+  function getMetaContent(attributeName: "name" | "property", value: string) {
+    return doc.metaElements
+      .find((metaElement) => metaElement.getAttribute(attributeName) === value)
+      ?.getAttribute("content");
+  }
 
-    expect(meta).toEqual(ROUTE_META[ROUTES.home]);
-    expect(doc.title).toBe("Trung Tâm Đào Tạo Lái Xe Thành Công Đắk Lắk");
-    expect(descriptionContent()).toBe(
-      "Trung Tâm Đào Tạo Lái Xe Cơ Giới Đường Bộ Thành Công - đào tạo lái xe mô tô, ô tô và nâng hạng giấy phép lái xe tại Đắk Lắk."
-    );
+  function countMeta(attributeName: "name" | "property", value: string) {
+    let count = 0;
+
+    for (const metaElement of doc.metaElements) {
+      if (metaElement.getAttribute(attributeName) === value) {
+        count += 1;
+      }
+    }
+
+    return count;
+  }
+
+  function assertRouteMeta(route: AppRoutePath) {
+    const meta = ROUTE_META[route];
+
+    applyPageMeta(route, doc);
+
+    expect(doc.title).toBe(meta.title);
+    expect(getMetaContent("name", "description")).toBe(meta.description);
+    expect(canonicalHref()).toBe(meta.canonicalUrl);
+    expect(getMetaContent("property", "og:title")).toBe(meta.title);
+    expect(getMetaContent("property", "og:description")).toBe(meta.description);
+    expect(getMetaContent("property", "og:type")).toBe("website");
+    expect(getMetaContent("property", "og:url")).toBe(meta.canonicalUrl);
+    expect(getMetaContent("name", "twitter:card")).toBe("summary");
+  }
+
+  it("sets title, canonical, Open Graph, and Twitter metadata for the home route", () => {
+    assertRouteMeta(ROUTES.home);
+    expect(canonicalHref()).toBe("https://thanhcongdaklak.edu.vn/");
   });
 
-  it("sets title and description for the enrollment route", () => {
-    applyPageMeta(ROUTES.enrollment, doc);
-
-    expect(doc.title).toBe("Tuyển sinh lái xe Thành Công Đắk Lắk");
-    expect(descriptionContent()).toBe(
-      "Thông tin tuyển sinh các hạng A1, A, B, C1 và nâng hạng giấy phép lái xe tại Trung tâm Thành Công."
-    );
+  it("sets title, canonical, Open Graph, and Twitter metadata for the enrollment route", () => {
+    assertRouteMeta(ROUTES.enrollment);
+    expect(canonicalHref()).toBe("https://thanhcongdaklak.edu.vn/tuyen-sinh");
   });
 
-  it("sets title and description for the lookup route", () => {
-    applyPageMeta(ROUTES.lookup, doc);
-
-    expect(doc.title).toBe("Tra cứu học viên - Trung tâm Thành Công");
-    expect(descriptionContent()).toBe(
-      "Tra cứu thông tin học viên theo CCCD tại Trung Tâm Đào Tạo Lái Xe Cơ Giới Đường Bộ Thành Công."
-    );
+  it("sets title, canonical, Open Graph, and Twitter metadata for the lookup route", () => {
+    assertRouteMeta(ROUTES.lookup);
+    expect(canonicalHref()).toBe("https://thanhcongdaklak.edu.vn/tra-cuu");
   });
 
-  it("sets title and description for the announcements route", () => {
-    applyPageMeta(ROUTES.announcements, doc);
-
-    expect(doc.title).toBe("Thông báo - Trung tâm Thành Công");
-    expect(descriptionContent()).toBe(
-      "Cập nhật thông báo đào tạo, lịch học, lịch kiểm tra và thông tin liên quan từ Trung tâm Thành Công."
-    );
+  it("sets title, canonical, Open Graph, and Twitter metadata for the announcements route", () => {
+    assertRouteMeta(ROUTES.announcements);
+    expect(canonicalHref()).toBe("https://thanhcongdaklak.edu.vn/thong-bao");
   });
 
-  it("sets title and description for the legal route", () => {
-    applyPageMeta(ROUTES.legal, doc);
-
-    expect(doc.title).toBe("Pháp lý đào tạo lái xe - Trung tâm Thành Công");
-    expect(descriptionContent()).toBe(
-      "Thông tin pháp lý, quy định đào tạo lái xe và các văn bản liên quan."
-    );
+  it("sets title, canonical, Open Graph, and Twitter metadata for the legal route", () => {
+    assertRouteMeta(ROUTES.legal);
+    expect(canonicalHref()).toBe("https://thanhcongdaklak.edu.vn/phap-ly");
   });
 
   it("uses the home metadata for unknown fallback routes", () => {
     expect(getPageMeta("/khong-ton-tai")).toEqual(ROUTE_META[ROUTES.home]);
   });
 
-  it("updates an existing meta description tag instead of duplicating it", () => {
-    const existingMeta = doc.createElement("meta") as unknown as FakeMetaElement;
+  it("updates existing SEO tags instead of duplicating them across route changes", () => {
+    const existingMeta = doc.createElement("meta") as unknown as FakeHeadElement;
     existingMeta.setAttribute("name", "description");
     existingMeta.setAttribute("content", "old");
     doc.head.append(existingMeta as unknown as Node);
 
     applyPageMeta(ROUTES.lookup, doc);
+    applyPageMeta(ROUTES.legal, doc);
 
-    expect(doc.metaElements).toHaveLength(1);
+    expect(countMeta("name", "description")).toBe(1);
+    expect(countMeta("property", "og:title")).toBe(1);
+    expect(countMeta("property", "og:url")).toBe(1);
+    expect(doc.linkElements).toHaveLength(1);
     expect(existingMeta.getAttribute("content")).toBe(
-      "Tra cứu thông tin học viên theo CCCD tại Trung Tâm Đào Tạo Lái Xe Cơ Giới Đường Bộ Thành Công."
+      ROUTE_META[ROUTES.legal].description
     );
+    expect(canonicalHref()).toBe(ROUTE_META[ROUTES.legal].canonicalUrl);
   });
 });
