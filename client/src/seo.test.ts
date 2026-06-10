@@ -1,21 +1,29 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { ROUTE_META, applyPageMeta, getPageMeta } from "./seo";
+import {
+  ORGANIZATION_JSON_LD,
+  ROUTE_META,
+  applyPageMeta,
+  getPageMeta,
+} from "./seo";
 import { ROUTES, type AppRoutePath } from "./routing";
 
 type FakeHeadElement = {
   attributes: Record<string, string>;
   getAttribute: (name: string) => string | null;
   setAttribute: (name: string, value: string) => void;
+  textContent: string;
 };
 
 type FakeDocument = Document & {
   linkElements: FakeHeadElement[];
   metaElements: FakeHeadElement[];
+  scriptElements: FakeHeadElement[];
 };
 
 function createFakeElement(): FakeHeadElement {
   return {
     attributes: {},
+    textContent: "",
     getAttribute(name) {
       return this.attributes[name] ?? null;
     },
@@ -29,9 +37,10 @@ function createFakeDocument(): FakeDocument {
   const fakeDocument = {
     linkElements: [] as FakeHeadElement[],
     metaElements: [] as FakeHeadElement[],
+    scriptElements: [] as FakeHeadElement[],
     title: "",
     createElement(tagName: string) {
-      if (tagName !== "meta" && tagName !== "link") {
+      if (tagName !== "meta" && tagName !== "link" && tagName !== "script") {
         throw new Error(`Unsupported tag in SEO test: ${tagName}`);
       }
 
@@ -44,6 +53,11 @@ function createFakeDocument(): FakeDocument {
           return;
         }
 
+        if (element.getAttribute("type") === "application/ld+json") {
+          fakeDocument.scriptElements.push(element);
+          return;
+        }
+
         fakeDocument.metaElements.push(element);
       },
     },
@@ -52,6 +66,19 @@ function createFakeDocument(): FakeDocument {
         return (
           fakeDocument.linkElements.find(
             (linkElement) => linkElement.getAttribute("rel") === "canonical"
+          ) ?? null
+        );
+      }
+
+      if (
+        selector ===
+        'script[type="application/ld+json"][data-schema="organization"]'
+      ) {
+        return (
+          fakeDocument.scriptElements.find(
+            (scriptElement) =>
+              scriptElement.getAttribute("type") === "application/ld+json" &&
+              scriptElement.getAttribute("data-schema") === "organization"
           ) ?? null
         );
       }
@@ -94,6 +121,16 @@ describe("route SEO metadata", () => {
     return doc.linkElements[0]?.getAttribute("href");
   }
 
+  function jsonLdContent() {
+    const content = doc.scriptElements[0]?.textContent;
+
+    if (!content) {
+      throw new Error("Missing JSON-LD content");
+    }
+
+    return JSON.parse(content) as Record<string, unknown>;
+  }
+
   function getMetaContent(attributeName: "name" | "property", value: string) {
     return doc.metaElements
       .find((metaElement) => metaElement.getAttribute(attributeName) === value)
@@ -125,6 +162,7 @@ describe("route SEO metadata", () => {
     expect(getMetaContent("property", "og:type")).toBe("website");
     expect(getMetaContent("property", "og:url")).toBe(meta.canonicalUrl);
     expect(getMetaContent("name", "twitter:card")).toBe("summary");
+    expect(jsonLdContent()).toEqual(ORGANIZATION_JSON_LD);
   }
 
   it("sets title, canonical, Open Graph, and Twitter metadata for the home route", () => {
@@ -169,9 +207,32 @@ describe("route SEO metadata", () => {
     expect(countMeta("property", "og:title")).toBe(1);
     expect(countMeta("property", "og:url")).toBe(1);
     expect(doc.linkElements).toHaveLength(1);
+    expect(doc.scriptElements).toHaveLength(1);
     expect(existingMeta.getAttribute("content")).toBe(
       ROUTE_META[ROUTES.legal].description
     );
     expect(canonicalHref()).toBe(ROUTE_META[ROUTES.legal].canonicalUrl);
+  });
+
+  it("creates safe organization JSON-LD without unconfirmed details", () => {
+    applyPageMeta(ROUTES.home, doc);
+
+    const jsonLd = jsonLdContent();
+
+    expect(jsonLd["@context"]).toBe("https://schema.org");
+    expect(jsonLd["@type"]).toEqual([
+      "Organization",
+      "LocalBusiness",
+      "EducationalOrganization",
+    ]);
+    expect(jsonLd.name).toBe(
+      "TRUNG TÂM ĐÀO TẠO LÁI XE CƠ GIỚI ĐƯỜNG BỘ THÀNH CÔNG"
+    );
+    expect(jsonLd.url).toBe("https://thanhcongdaklak.edu.vn");
+    expect(jsonLd.slogan).toBe("Vững tay lái – Vững bước thành công");
+    expect(jsonLd).not.toHaveProperty("address");
+    expect(jsonLd).not.toHaveProperty("geo");
+    expect(jsonLd).not.toHaveProperty("openingHours");
+    expect(jsonLd).not.toHaveProperty("sameAs");
   });
 });

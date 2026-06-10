@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { type AppRoutePath, ROUTES, normalizePathname } from "./routing";
 
 export const SITE_BASE_URL = "https://thanhcongdaklak.edu.vn";
+const JSON_LD_SELECTOR =
+  'script[type="application/ld+json"][data-schema="organization"]';
 
 export type PageMeta = {
   canonicalUrl: string;
@@ -52,6 +54,30 @@ export const ROUTE_META: Record<AppRoutePath, PageMeta> = {
 
 export const DEFAULT_PAGE_META = ROUTE_META[ROUTES.home];
 
+export const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "LocalBusiness", "EducationalOrganization"],
+  name: "TRUNG TÂM ĐÀO TẠO LÁI XE CƠ GIỚI ĐƯỜNG BỘ THÀNH CÔNG",
+  alternateName: "Trung tâm Thành Công",
+  url: SITE_BASE_URL,
+  slogan: "Vững tay lái – Vững bước thành công",
+  areaServed: {
+    "@type": "AdministrativeArea",
+    name: "Đắk Lắk",
+  },
+  description:
+    "Trung tâm đào tạo lái xe mô tô, ô tô và nâng hạng giấy phép lái xe tại khu vực Đắk Lắk.",
+  knowsAbout: [
+    "Đào tạo lái xe mô tô",
+    "Đào tạo lái xe ô tô",
+    "Nâng hạng giấy phép lái xe",
+    "Hạng A1",
+    "Hạng A",
+    "Hạng B",
+    "Hạng C1",
+  ],
+} as const;
+
 function getMetaElement(
   selector: string,
   attributeName: "name" | "property",
@@ -92,6 +118,20 @@ function getCanonicalLinkElement(doc: Document) {
   return linkElement;
 }
 
+function getJsonLdScriptElement(doc: Document) {
+  const currentScript = doc.querySelector<HTMLScriptElement>(JSON_LD_SELECTOR);
+
+  if (currentScript) {
+    return currentScript;
+  }
+
+  const scriptElement = doc.createElement("script");
+  scriptElement.setAttribute("type", "application/ld+json");
+  scriptElement.setAttribute("data-schema", "organization");
+  doc.head.append(scriptElement);
+  return scriptElement;
+}
+
 export function getPageMeta(pathname: string): PageMeta {
   const route = normalizePathname(pathname);
   return ROUTE_META[route] ?? DEFAULT_PAGE_META;
@@ -120,6 +160,7 @@ export function applyPageMeta(
     .setAttribute("content", meta.canonicalUrl);
   getMetaElement('meta[name="twitter:card"]', "name", "twitter:card", doc)
     .setAttribute("content", "summary");
+  getJsonLdScriptElement(doc).textContent = JSON.stringify(ORGANIZATION_JSON_LD);
 
   return meta;
 }
